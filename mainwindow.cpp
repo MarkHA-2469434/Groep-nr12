@@ -6,8 +6,6 @@
 #include <QRandomGenerator>
 #include <QTimer>
 
-
-
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
     , ui(new Ui::MainWindow)
@@ -16,30 +14,34 @@ MainWindow::MainWindow(QWidget *parent)
 
     //initialisatie
     scene = new QGraphicsScene(this);
+    const int boardPixelSize = 900; // 10*80 tiles
+    scene->setSceneRect(0,0,boardPixelSize, boardPixelSize);
+
     ui->boardView->setScene(scene);
     //basis
     ui->boardView->setRenderHint(QPainter::Antialiasing);
 
-    createBoard();
+    ui->boardView->setFixedSize(boardPixelSize + 2, boardPixelSize + 2);
+    ui->boardView->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
+    ui->boardView->setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
 
-    connect(ui->rollButton, &QPushButton::clicked, this, &MainWindow::on_rollButton_clicked);
-    connect(ui->buyButton, &QPushButton::clicked, this, &MainWindow::on_buyButton_clicked);
+    createBoard();
 
     //create player
     playerToken = new QGraphicsEllipseItem(0,0,30,30);
-    playerToken->setBrush(Qt::black);
+    playerToken->setBrush(Qt::cyan);
     scene->addItem(playerToken);
     movePlayer(0); //go to go
+
+    connect(ui->buyButton, &QPushButton::clicked, this, &MainWindow::on_buyButton_clicked);
+
 }
 
 void MainWindow::createBoard()
 {
     scene->clear();
 
-    const int tileSize= 80;
-    const int boardSize = 10;
-
-    createProperty(0, "Start", Qt::green); // GO
+    createProperty(0, "Start", Qt::red); // GO
     createProperty(1, "Leuven Dieststraat", QColor(165,93,68)); // Brown
     createProperty(2, "Algemeen Fonds", Qt::white);
     createProperty(3, "Mechelen Bruul", QColor(165,93,68)); // Brown
@@ -90,41 +92,73 @@ void MainWindow::createBoard()
 void MainWindow::createProperty(int index, const QString& name, QColor color)
 {
     const int tileSize = 80;
-    const int boardSize = 10;
+    //const int boardSize = 10;
 
-    int side = index / boardSize;
-    int pos = index % boardSize;
+    //int side = index / boardSize;
+    //int pos = index % boardSize;
 
-    QPointF position;
-    switch(side) {
-    case 0: position = QPointF(pos * tileSize, 0); break; //top
-    case 1: position = QPointF(9 * tileSize, pos * tileSize); break; //right
-    case 2: position = QPointF((9-pos)* tileSize, 9 * tileSize); break; //bottom
-    case 3: position = QPointF(0, (9-pos)*tileSize); break; //left
-    }
+    QPointF position = calculateTilePosition(index);
+
+    //switch(side) {
+    //case 0: position = QPointF(pos * tileSize, 0); break; //top
+    //case 1: position = QPointF(9 * tileSize, pos * tileSize); break; //right
+    //case 2: position = QPointF((9-pos)* tileSize, 9 * tileSize); break; //bottom
+    //case 3: position = QPointF(0, (9-pos)*tileSize); break; //left
+    //}
 
     //tile making
     QGraphicsRectItem *tile = new QGraphicsRectItem(0,0, tileSize, tileSize);
     tile->setPos(position);
     tile->setBrush(color);
     tile->setPen(QPen(Qt::black, 1));
+
+    if (index == 0) {
+        QPen redPen(Qt::red);
+        redPen.setWidth(4);
+        tile->setPen(redPen);
+        tile->setZValue(5);
+    }
     scene->addItem(tile);
 
     //add property name
     QGraphicsTextItem *text = new QGraphicsTextItem(name);
     text->setPos(position.x()+ 5, position.y() + 5);
     text->setTextWidth(tileSize - 10);
+    text->setZValue(2);
     scene->addItem(text);
+
+    qDebug() << "Tile" << index << "position:" << position;
 }
 
-void MainWindow::on_rollButton_clicked() {
+
+QPointF MainWindow::calculateTilePosition(int index) const {
+    const int tileSize = 80;
+    const int tilesPerSide = 11;
+
+    // Normalize index first (0-39)
+    index = index % 40;
+
+    int side = index / 10;
+    int pos = index % 10;
+
+    switch(side) {
+    case 0: return QPointF(pos * tileSize, 0);                     // Top (left to right)
+    case 1: return QPointF(9 * tileSize, pos * tileSize);          // Right (top to bottom)
+    case 2: return QPointF((9-pos) * tileSize, 9 * tileSize);      // Bottom (right to left)
+    case 3: return QPointF(0, (9-pos) * tileSize);                 // Left (bottom to top)
+    default: return QPointF(0, 0);
+    }
+}
+
+void MainWindow::on_rollButton_released()
+{
     //diable button during animation
     ui->rollButton->setEnabled(false);
 
     //show rolling animation
     ui->diceLabel->setText("Rolling...");
 
-    QTimer::singleShot(800, [this] (){
+    //QTimer::singleShot(800, [this] (){
     int dice1 = QRandomGenerator::global()->bounded(1,7);
     int dice2 = QRandomGenerator::global()->bounded(1,7);
     int total = dice1 + dice2;
@@ -132,14 +166,14 @@ void MainWindow::on_rollButton_clicked() {
     //updaet UI
     ui->diceLabel->setText(QString("%1 + %2 = %3").arg(dice1).arg(dice2).arg(total));
 
+    qDebug() << "total" << total;
     //move player
     animatePlayerMovement(total);
-
     //reenable button
     ui->rollButton->setEnabled(true);
-    });
-}
+    //});
 
+}
 
 void MainWindow::on_buyButton_clicked()
 {
@@ -147,58 +181,63 @@ void MainWindow::on_buyButton_clicked()
 }
 
 
-QPointF MainWindow::calculateTilePosition(int index) const
-{
-    const int tileSize = 80;
-    const int tilesPerSide = 10;
-
-    int side = index / tilesPerSide;
-    int pos = index % tilesPerSide;
-
-    switch(side){
-    case 0: return QPointF((9-pos) * tileSize, 9 * tileSize); //bottom, right to left
-    case 1: return QPointF(0, (9-pos) * tileSize);            // Left (bottom to top)
-    case 2: return QPointF(pos * tileSize, 0);                // Top (left to right)
-    case 3: return QPointF(9 * tileSize, pos * tileSize);     // Right (top to bottom)
-    default: return QPointF(0,0);
-    }
-}
-
 
 void MainWindow::movePlayer(int newPosition){
     currentPlayerPosition = newPosition;
+
     QPointF pos = calculateTilePosition(newPosition);
 
+    qDebug() << "Moving player to position" << newPosition << " at coordinates " <<pos;
+
     //center token on tile
-    playerToken->setPos(pos.x() + 15, pos.y() + 15);
+    playerToken->setPos(pos.x() + 25, pos.y() + 25);
 }
 
 void MainWindow::handleLanding(int position){
-    qDebug() << "Landed on:" << position;
+    qDebug() << "Landed on property index: " << position;
 }
 
 
 void MainWindow::animatePlayerMovement(int steps){
+    qDebug() << "Steps" << steps;
+
+    int stepsRemaining = steps;
     int targetPosition = (currentPlayerPosition + steps) % 40;
 
-    //smooth animation (1 step every 100ms)
-    for (int i = 1; i <= steps; i++){
-        QTimer::singleShot(i * 100, [this, i, steps, targetPosition](){
-            movePlayer((currentPlayerPosition + 1) % 40);
+    // Animate each step
+    for (int i = 1; i <= steps; i++) {
+        QTimer* timer = new QTimer(this);
+        timer->setSingleShot(true);
+        timer->setInterval(i * 150);  // 150ms between steps
 
-            //when complete
+        connect(timer, &QTimer::timeout, [this, i, steps, targetPosition]() {
+            currentPlayerPosition = (currentPlayerPosition + 1) % 40;
+            movePlayer(currentPlayerPosition);
+
+            qDebug() << "Step" << i << "/" << steps << "- Now at" << currentPlayerPosition;
+
             if (i == steps) {
-                handleLanding(targetPosition);
+                qDebug() << "Landed on:" << currentPlayerPosition;
+                isMoving = false;
+                handleLanding(currentPlayerPosition);
             }
         });
+
+        timer->start();
+        moveTimers.append(timer);
     }
 }
 
 
-// In mainwindow.cpp
-
-
 MainWindow::~MainWindow()
 {
+    for (auto timer : moveTimers) {
+        if (timer) {
+            timer->stop();
+            timer->deleteLater();
+        }
+    }
+    moveTimers.clear();
     delete ui;
 }
+
