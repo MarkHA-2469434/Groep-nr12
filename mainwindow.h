@@ -19,11 +19,9 @@ public:
     ~MainWindow();
 
 private slots:
-    void on_rollButton_clicked();
-
-    void on_addTileButton_clicked();
-
     void on_buyButton_clicked();
+
+    void on_rollButton_released();
 
 private:
     Ui::MainWindow *ui;
@@ -38,6 +36,11 @@ private:
     QPointF calculateTilePosition(int index) const;
 
     QGraphicsEllipseItem* playerToken = nullptr;
+
     int currentPlayerPosition = 0; //start at GO
+    bool isMoving = false; // add this flag
+
+    QList<QTimer*> moveTimers; //track active animations
+    QTimer* moveTimer = nullptr; //track active animations
 };
 #endif // MAINWINDOW_H
