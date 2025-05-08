@@ -42,5 +42,9 @@ private:
 
     QList<QTimer*> moveTimers; //track active animations
     QTimer* moveTimer = nullptr; //track active animations
+
+    const int TILE_SIZE = 80;
+    const int TILES_PER_SIDE = 11;
+    const int BOARD_SIZE = TILE_SIZE * TILES_PER_SIDE;
 };
 #endif // MAINWINDOW_H

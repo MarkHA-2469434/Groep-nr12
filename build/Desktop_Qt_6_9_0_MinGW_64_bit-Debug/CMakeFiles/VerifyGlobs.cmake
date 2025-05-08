@@ -49,7 +49,6 @@ set(OLD_GLOB
   "C:/Users/markh/OneDrive/Documenten/MonopolyQt/main.cpp"
   "C:/Users/markh/OneDrive/Documenten/MonopolyQt/mainwindow.cpp"
   "C:/Users/markh/OneDrive/Documenten/MonopolyQt/speler.cpp"
-  "C:/Users/markh/OneDrive/Documenten/MonopolyQt/vakje.cpp"
   )
 if(NOT "${NEW_GLOB}" STREQUAL "${OLD_GLOB}")
   message("-- GLOB mismatch!")
@@ -74,7 +73,6 @@ set(OLD_GLOB
   "C:/Users/markh/OneDrive/Documenten/MonopolyQt/dobbelsteen.h"
   "C:/Users/markh/OneDrive/Documenten/MonopolyQt/mainwindow.h"
   "C:/Users/markh/OneDrive/Documenten/MonopolyQt/speler.h"
-  "C:/Users/markh/OneDrive/Documenten/MonopolyQt/vakje.h"
   )
 if(NOT "${NEW_GLOB}" STREQUAL "${OLD_GLOB}")
   message("-- GLOB mismatch!")

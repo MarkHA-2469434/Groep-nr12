@@ -14,14 +14,13 @@ MainWindow::MainWindow(QWidget *parent)
 
     //initialisatie
     scene = new QGraphicsScene(this);
-    const int boardPixelSize = 900; // 10*80 tiles
-    scene->setSceneRect(0,0,boardPixelSize, boardPixelSize);
+    scene->setSceneRect(0,0,BOARD_SIZE, BOARD_SIZE);
 
     ui->boardView->setScene(scene);
     //basis
     ui->boardView->setRenderHint(QPainter::Antialiasing);
 
-    ui->boardView->setFixedSize(boardPixelSize + 2, boardPixelSize + 2);
+    ui->boardView->setFixedSize(BOARD_SIZE + 2, BOARD_SIZE + 2);
     ui->boardView->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
     ui->boardView->setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
 
@@ -34,58 +33,21 @@ MainWindow::MainWindow(QWidget *parent)
     movePlayer(0); //go to go
 
     connect(ui->buyButton, &QPushButton::clicked, this, &MainWindow::on_buyButton_clicked);
-
 }
 
-void MainWindow::createBoard()
-{
-    scene->clear();
+QPointF MainWindow::calculateTilePosition(int index) const {
+    // Normalize index first (0-39)
+    index = index % 40;
 
-    createProperty(0, "Start", Qt::red); // GO
-    createProperty(1, "Leuven Dieststraat", QColor(165,93,68)); // Brown
-    createProperty(2, "Algemeen Fonds", Qt::white);
-    createProperty(3, "Mechelen Bruul", QColor(165,93,68)); // Brown
-    createProperty(4, "Inkomsten Belasting", Qt::gray);
-    createProperty(5, "Station Noord", Qt::black);
-    createProperty(6, "Leuven Bondgenotenlaan", QColor(23, 173, 207)); // Light Blue
-    createProperty(7, "Kans", Qt::white);
-    createProperty(8, "Turnhout Gasthuisstr.", QColor(23, 173, 207)); // Light Blue
-    createProperty(9, "Turnhout Leopoldstr.", QColor(23, 173, 207)); // Light Blue
-    createProperty(10, "Jail/Just Visiting", Qt::darkGray);
-    createProperty(11, "Aalst lange Zoutstraat", QColor(216, 27, 171)); // Pink
-    createProperty(12, "Electriciteit Centraal", Qt::yellow);
-    createProperty(13, "Brugge Vlammingenstr.", QColor(216, 27, 171)); // Pink
-    createProperty(14, "Knokke Kustlaan", QColor(216, 27, 171)); // Pink
-    createProperty(15, "Station Centraal", Qt::black);
-    createProperty(16, "Brugge Steenstraat", QColor(237, 124, 45)); // Orange
-    createProperty(17, "Algemeen Fonds", Qt::white);
-    createProperty(18, "Oostende Kapelstraat", QColor(237, 124, 45)); // Orange
-    createProperty(19, "Kortrijk Rijselstraat", QColor(237, 124, 45)); // Orange
-    createProperty(20, "Vrije Parking", Qt::lightGray);
-    createProperty(21, "Tienen Leuvensestr.", QColor(237, 28, 36)); // Red
-    createProperty(22, "Kans", Qt::white);
-    createProperty(23, "Gent Kortrijksestr.", QColor(237, 28, 36)); // Red
-    createProperty(24, "Hasselt Grote Markt", QColor(237, 28, 36)); // Red
-    createProperty(25, "Buurt-Spoorwegen", Qt::black);
-    createProperty(26, "Antwerpen Groenplaats", QColor(251, 242, 54)); // Yellow
-    createProperty(27, "Brussel Lakenstraat", QColor(251, 242, 54)); // Yellow
-    createProperty(28, "Waterdienst", Qt::cyan);
-    createProperty(29, "Gent Veldstraat", QColor(251, 242, 54)); // Yellow
-    createProperty(30, "Go To Jail", Qt::darkRed);
-    createProperty(31, "Antwerpen Huidevettersstraat", QColor(29, 178, 74)); // Green
-    createProperty(32, "Gent Vlaanderenstraat", QColor(29, 178, 74)); // Green
-    createProperty(33, "Algemeen Fonds", Qt::white);
-    createProperty(34, "Hasselt Demerstraat", QColor(29, 178, 74)); // Green
-    createProperty(35, "Station Zuid", Qt::black);
-    createProperty(36, "Kans", Qt::white);
-    createProperty(37, "Antwerpen Meir", QColor(13, 46, 146)); // Dark Blue
-    createProperty(38, "Extra Belasting", Qt::gray);
-    createProperty(39, "Brussel Nieuwstraat", QColor(13, 46, 146)); // Dark Blue
-
-    // Add center image/logo
-    //QGraphicsPixmapItem *logo = new QGraphicsPixmapItem(QPixmap(":/images/monopoly_logo.png"));
-    //logo->setPos(300, 300); // Center position
-    //scene->addItem(logo);
+    if (index < 10) { // Bottom side (0–9): right to left
+        return QPointF((TILES_PER_SIDE - 1 - index) * TILE_SIZE, BOARD_SIZE - TILE_SIZE);
+    } else if (index < 20) { // Left side (10–19): bottom to top
+        return QPointF(0, (TILES_PER_SIDE - 1 - (index - 10)) * TILE_SIZE);
+    } else if (index < 30) { // Top side (20–29): left to right
+        return QPointF((index - 20) * TILE_SIZE, 0);
+    } else { // Right side (30–39): top to bottom
+        return QPointF(BOARD_SIZE - TILE_SIZE, (index - 30) * TILE_SIZE);
+    }
 }
 
 
@@ -99,25 +61,19 @@ void MainWindow::createProperty(int index, const QString& name, QColor color)
 
     QPointF position = calculateTilePosition(index);
 
-    //switch(side) {
-    //case 0: position = QPointF(pos * tileSize, 0); break; //top
-    //case 1: position = QPointF(9 * tileSize, pos * tileSize); break; //right
-    //case 2: position = QPointF((9-pos)* tileSize, 9 * tileSize); break; //bottom
-    //case 3: position = QPointF(0, (9-pos)*tileSize); break; //left
-    //}
+    // Manual positioning for corners
+    switch(index) {
+    case 0: position = QPointF((TILES_PER_SIDE - 1) * TILE_SIZE, BOARD_SIZE - TILE_SIZE); break; // Tile 0
+    case 10: position = QPointF(0, (TILES_PER_SIDE - 1) * TILE_SIZE); break; // Tile 10
+    case 20: position = QPointF(0, 0); break; // Tile 20
+    case 30: position = QPointF((TILES_PER_SIDE - 1) * TILE_SIZE, 0); break; // Tile 30
+    }
 
     //tile making
-    QGraphicsRectItem *tile = new QGraphicsRectItem(0,0, tileSize, tileSize);
+    QGraphicsRectItem *tile = new QGraphicsRectItem(0,0, TILE_SIZE, TILE_SIZE);
     tile->setPos(position);
     tile->setBrush(color);
     tile->setPen(QPen(Qt::black, 1));
-
-    if (index == 0) {
-        QPen redPen(Qt::red);
-        redPen.setWidth(4);
-        tile->setPen(redPen);
-        tile->setZValue(5);
-    }
     scene->addItem(tile);
 
     //add property name
@@ -131,24 +87,59 @@ void MainWindow::createProperty(int index, const QString& name, QColor color)
 }
 
 
-QPointF MainWindow::calculateTilePosition(int index) const {
-    const int tileSize = 80;
-    const int tilesPerSide = 11;
 
-    // Normalize index first (0-39)
-    index = index % 40;
+void MainWindow::createBoard()
+{
+    scene->clear();
 
-    int side = index / 10;
-    int pos = index % 10;
+    createProperty(0, "Start", Qt::red); // GO
+    createProperty(1, "Leuven Dieststraat", QColor(165,93,68)); // Brown
+    createProperty(2, "Algemeen Fonds", Qt::lightGray);
+    createProperty(3, "Mechelen Bruul", QColor(165,93,68)); // Brown
+    createProperty(4, "Inkomsten Belasting", Qt::gray);
+    createProperty(5, "Station Noord", Qt::black);
+    createProperty(6, "Leuven Bondgenotenlaan", QColor(23, 173, 207)); // Light Blue
+    createProperty(7, "Kans", Qt::lightGray);
+    createProperty(8, "Turnhout Gasthuisstr.", QColor(23, 173, 207)); // Light Blue
+    createProperty(9, "Turnhout Leopoldstr.", QColor(23, 173, 207)); // Light Blue
+    createProperty(10, "Jail/Just Visiting", Qt::blue);
+    createProperty(11, "Aalst lange Zoutstraat", QColor(216, 27, 171)); // Pink
+    createProperty(12, "Electriciteit Centraal", Qt::lightGray);
+    createProperty(13, "Brugge Vlammingenstr.", QColor(216, 27, 171)); // Pink
+    createProperty(14, "Knokke Kustlaan", QColor(216, 27, 171)); // Pink
+    createProperty(15, "Station Centraal", Qt::black);
+    createProperty(16, "Brugge Steenstraat", QColor(237, 124, 45)); // Orange
+    createProperty(17, "Algemeen Fonds", Qt::lightGray);
+    createProperty(18, "Oostende Kapelstraat", QColor(237, 124, 45)); // Orange
+    createProperty(19, "Kortrijk Rijselstraat", QColor(237, 124, 45)); // Orange
+    createProperty(20, "Vrije Parking", Qt::blue);
+    createProperty(21, "Tienen Leuvensestr.", QColor(237, 28, 36)); // Red
+    createProperty(22, "Kans", Qt::lightGray);
+    createProperty(23, "Gent Kortrijksestr.", QColor(237, 28, 36)); // Red
+    createProperty(24, "Hasselt Grote Markt", QColor(237, 28, 36)); // Red
+    createProperty(25, "Buurt-Spoorwegen", Qt::black);
+    createProperty(26, "Antwerpen Groenplaats", QColor(251, 242, 54)); // Yellow
+    createProperty(27, "Brussel Lakenstraat", QColor(251, 242, 54)); // Yellow
+    createProperty(28, "Waterdienst", Qt::cyan);
+    createProperty(29, "Gent Veldstraat", QColor(251, 242, 54)); // Yellow
+    createProperty(30, "Go To Jail", Qt::blue);
+    createProperty(31, "Antwerpen Huidevettersstraat", QColor(29, 178, 74)); // Green
+    createProperty(32, "Gent Vlaanderenstraat", QColor(29, 178, 74)); // Green
+    createProperty(33, "Algemeen Fonds", Qt::lightGray);
+    createProperty(34, "Hasselt Demerstraat", QColor(29, 178, 74)); // Green
+    createProperty(35, "Station Zuid", Qt::black);
+    createProperty(36, "Kans", Qt::lightGray);
+    createProperty(37, "Antwerpen Meir", QColor(13, 46, 146)); // Dark Blue
+    createProperty(38, "Extra Belasting", Qt::gray);
+    createProperty(39, "Brussel Nieuwstraat", QColor(13, 46, 146)); // Dark Blue
 
-    switch(side) {
-    case 0: return QPointF(pos * tileSize, 0);                     // Top (left to right)
-    case 1: return QPointF(9 * tileSize, pos * tileSize);          // Right (top to bottom)
-    case 2: return QPointF((9-pos) * tileSize, 9 * tileSize);      // Bottom (right to left)
-    case 3: return QPointF(0, (9-pos) * tileSize);                 // Left (bottom to top)
-    default: return QPointF(0, 0);
-    }
+    // Add center image/logo
+    //QGraphicsPixmapItem *logo = new QGraphicsPixmapItem(QPixmap(":/images/monopoly_logo.png"));
+    //logo->setPos(300, 300); // Center position
+    //scene->addItem(logo);
+
 }
+
 
 void MainWindow::on_rollButton_released()
 {
@@ -158,7 +149,7 @@ void MainWindow::on_rollButton_released()
     //show rolling animation
     ui->diceLabel->setText("Rolling...");
 
-    //QTimer::singleShot(800, [this] (){
+    QTimer::singleShot(800, [this] (){
     int dice1 = QRandomGenerator::global()->bounded(1,7);
     int dice2 = QRandomGenerator::global()->bounded(1,7);
     int total = dice1 + dice2;
@@ -171,7 +162,7 @@ void MainWindow::on_rollButton_released()
     animatePlayerMovement(total);
     //reenable button
     ui->rollButton->setEnabled(true);
-    //});
+    });
 
 }
 

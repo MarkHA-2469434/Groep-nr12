@@ -365,12 +365,6 @@
 			"MU",
 			"EWIEGA46WW/moc_speler.cpp",
 			null
-		],
-		[
-			"C:/Users/markh/OneDrive/Documenten/MonopolyQt/vakje.h",
-			"MU",
-			"EWIEGA46WW/moc_vakje.cpp",
-			null
 		]
 	],
 	"HEADER_EXTENSIONS" : [ "h", "hh", "h++", "hm", "hpp", "hxx", "in", "txx" ],
@@ -460,8 +454,7 @@
 			"C:/Users/markh/OneDrive/Documenten/MonopolyQt/speler.cpp",
 			"MU",
 			null
-		],
-		[ "C:/Users/markh/OneDrive/Documenten/MonopolyQt/vakje.cpp", "MU", null ]
+		]
 	],
 	"UIC_OPTIONS" : [],
 	"UIC_SEARCH_PATHS" : [],

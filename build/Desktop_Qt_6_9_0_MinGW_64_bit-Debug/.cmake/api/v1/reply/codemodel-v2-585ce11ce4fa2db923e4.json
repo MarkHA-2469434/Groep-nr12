@@ -7,7 +7,7 @@
 				{
 					"build" : ".",
 					"hasInstallRule" : true,
-					"jsonFile" : "directory-.-Debug-592b1b45151d69864a4e.json",
+					"jsonFile" : "directory-.-Debug-3f4da1f893b96df0d0da.json",
 					"minimumCMakeVersion" : 
 					{
 						"string" : "3.16"
@@ -44,7 +44,7 @@
 				{
 					"directoryIndex" : 0,
 					"id" : "MonopolyQt::@6890427a1f51a3e7e1df",
-					"jsonFile" : "target-MonopolyQt-Debug-175984b755423f0b54ba.json",
+					"jsonFile" : "target-MonopolyQt-Debug-4a70177099ccb884e801.json",
 					"name" : "MonopolyQt",
 					"projectIndex" : 0
 				},

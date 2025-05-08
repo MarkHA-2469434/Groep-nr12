@@ -26,7 +26,7 @@ if(${QT_VERSION_MAJOR} GREATER_EQUAL 6)
     qt_add_executable(MonopolyQt
         MANUAL_FINALIZATION
         ${PROJECT_SOURCES}
-        vakje.h vakje.cpp
+
         bord.h bord.cpp
         speler.h speler.cpp
         dobbelsteen.h dobbelsteen.cpp
