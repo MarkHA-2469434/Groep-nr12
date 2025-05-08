@@ -98,7 +98,10 @@
 		},
 		{
 			"expression" : "C:/Users/markh/OneDrive/Documenten/MonopolyQt/*.qrc",
-			"paths" : [],
+			"paths" : 
+			[
+				"C:/Users/markh/OneDrive/Documenten/MonopolyQt/images.qrc"
+			],
 			"recurse" : true
 		},
 		{
@@ -1499,6 +1502,9 @@
 			"isCMake" : true,
 			"isExternal" : true,
 			"path" : "C:/Qt/Tools/CMake_64/share/cmake-3.30/Modules/GNUInstallDirs.cmake"
+		},
+		{
+			"path" : "images.qrc"
 		}
 	],
 	"kind" : "cmakeFiles",

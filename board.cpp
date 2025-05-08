@@ -1,68 +1,70 @@
 #include "board.h"
 #include "Tile.h"
-#include "mainwindow.h"
+#include <QTextDocument>
+#include <QTextOption>
 
-Board::Board(QGraphicsScene* scene) : scene(scene) {}
+Board::Board(QGraphicsScene* scene) : m_scene(scene) {}
 
 void Board::create() {
     tiles.resize(40);
 
     // Create all tiles with their properties
-    tiles[0] = new Tile(0, "Start", Qt::red, calculateTilePosition(0));
-    tiles[1] = new Tile(1, "Leuven Dieststraat", QColor(165,93,68), calculateTilePosition(1));
-    tiles[2] = new Tile(2, "Algemeen Fonds", Qt::lightGray, calculateTilePosition(2));
-    tiles[3] = new Tile(3, "Mechelen Bruul", QColor(165,93,68), calculateTilePosition(3));
-    tiles[4] = new Tile(4, "Inkomsten Belasting", Qt::gray, calculateTilePosition(4));
-    tiles[5] = new Tile(5, "Station Noord", Qt::black, calculateTilePosition(5));
-    tiles[6] = new Tile(6, "Leuven Bondgenotenlaan", QColor(23, 173, 207), calculateTilePosition(6));
-    tiles[7] = new Tile(7, "Kans", Qt::lightGray, calculateTilePosition(7));
-    tiles[8] = new Tile(8, "Turnhout Gasthuisstr.", QColor(23, 173, 207), calculateTilePosition(8));
-    tiles[9] = new Tile(9, "Turnhout Leopoldstr.", QColor(23, 173, 207), calculateTilePosition(9));
-    tiles[10] = new Tile(10, "Jail/Just Visiting", Qt::blue, calculateTilePosition(10));
-    tiles[11] = new Tile(11, "Aalst lange Zoutstraat", QColor(216, 27, 171), calculateTilePosition(11));
-    tiles[12] = new Tile(12, "Electriciteit Centraal", Qt::lightGray, calculateTilePosition(12));
-    tiles[13] = new Tile(13, "Brugge Vlammingenstr.", QColor(216, 27, 171), calculateTilePosition(13));
-    tiles[14] = new Tile(14, "Knokke Kustlaan", QColor(216, 27, 171), calculateTilePosition(14));
-    tiles[15] = new Tile(15, "Station Centraal", Qt::black, calculateTilePosition(15));
-    tiles[16] = new Tile(16, "Brugge Steenstraat", QColor(237, 124, 45), calculateTilePosition(16));
-    tiles[17] = new Tile(17, "Algemeen Fonds", Qt::lightGray, calculateTilePosition(17));
-    tiles[18] = new Tile(18, "Oostende Kapelstraat", QColor(237, 124, 45), calculateTilePosition(18));
-    tiles[19] = new Tile(19, "Kortrijk Rijselstraat", QColor(237, 124, 45), calculateTilePosition(19));
-    tiles[20] = new Tile(20, "Vrije Parking", Qt::blue, calculateTilePosition(20));
-    tiles[21] = new Tile(21, "Tienen Leuvensestr.", QColor(237, 28, 36), calculateTilePosition(21));
-    tiles[22] = new Tile(22, "Kans", Qt::lightGray, calculateTilePosition(22));
-    tiles[23] = new Tile(23, "Gent Kortrijksestr.", QColor(237, 28, 36), calculateTilePosition(23));
-    tiles[24] = new Tile(24, "Hasselt Grote Markt", QColor(237, 28, 36), calculateTilePosition(24));
-    tiles[25] = new Tile(25, "Buurt-Spoorwegen", Qt::black, calculateTilePosition(25));
-    tiles[26] = new Tile(26, "Antwerpen Groenplaats", QColor(251, 242, 54), calculateTilePosition(26));
-    tiles[27] = new Tile(27, "Brussel Lakenstraat", QColor(251, 242, 54), calculateTilePosition(27));
-    tiles[28] = new Tile(28, "Waterdienst", Qt::cyan, calculateTilePosition(28));
-    tiles[29] = new Tile(29, "Gent Veldstraat", QColor(251, 242, 54), calculateTilePosition(29));
-    tiles[30] = new Tile(30, "Go To Jail", Qt::blue, calculateTilePosition(30));
-    tiles[31] = new Tile(31, "Antwerpen Huidevettersstraat", QColor(29, 178, 74), calculateTilePosition(31));
-    tiles[32] = new Tile(32, "Gent Vlaanderenstraat", QColor(29, 178, 74), calculateTilePosition(32));
-    tiles[33] = new Tile(33, "Algemeen Fonds", Qt::lightGray, calculateTilePosition(33));
-    tiles[34] = new Tile(34, "Hasselt Demerstraat", QColor(29, 178, 74), calculateTilePosition(34));
-    tiles[35] = new Tile(35, "Station Zuid", Qt::black, calculateTilePosition(35));
-    tiles[36] = new Tile(36, "Kans", Qt::lightGray, calculateTilePosition(36));
-    tiles[37] = new Tile(37, "Antwerpen Meir", QColor(13, 46, 146), calculateTilePosition(37));
-    tiles[38] = new Tile(38, "Extra Belasting", Qt::gray, calculateTilePosition(38));
-    tiles[39] = new Tile(39, "Brussel Nieuwstraat", QColor(13, 46, 146), calculateTilePosition(39));
+    tiles[0] = new Tile(0, "Start", Qt::red,0,0, calculateTilePosition(0), m_scene);
+    tiles[1] = new Tile(1, "Leuven\n Dieststraat", QColor(165,93,68),60, 4, calculateTilePosition(1), m_scene);
+    tiles[2] = new Tile(2, "Algemeen\n Fonds", Qt::lightGray, 30, 2, calculateTilePosition(2), m_scene);
+    tiles[3] = new Tile(3, "Mechelen\n Bruul", QColor(165,93,68), 25, 9, calculateTilePosition(3), m_scene);
+    tiles[4] = new Tile(4, "Inkomsten\n Belasting", Qt::gray, 23, 5, calculateTilePosition(4), m_scene);
+    tiles[5] = new Tile(5, "Station\n Noord", Qt::black, 87, 10, calculateTilePosition(5), m_scene);
+    tiles[6] = new Tile(6, "Leuven\n Bondgenoten\nlaan", QColor(23, 173, 207), 10, 10, calculateTilePosition(6), m_scene);
+    tiles[7] = new Tile(7, "Kans", Qt::lightGray, 8, 4, calculateTilePosition(7), m_scene);
+    tiles[8] = new Tile(8, "Turnhout\n Gasthuisstr.", QColor(23, 173, 207), 1,1, calculateTilePosition(8), m_scene);
+    tiles[9] = new Tile(9, "Turnhout\n Leopoldstr.", QColor(23, 173, 207),100, 80, calculateTilePosition(9), m_scene);
+    tiles[10] = new Tile(10, "Jail/\nJust Visiting", Qt::blue,0, 0, calculateTilePosition(10), m_scene);
+    tiles[11] = new Tile(11, "Aalst lange\n Zoutstraat", QColor(216, 27, 171), 200,20, calculateTilePosition(11), m_scene);
+    tiles[12] = new Tile(12, "Electriciteit\n Centraal", Qt::lightGray,80, 100,  calculateTilePosition(12), m_scene);
+    tiles[13] = new Tile(13, "Brugge\n Vlammingenstr.", QColor(216, 27, 171),90, 20, calculateTilePosition(13), m_scene);
+    tiles[14] = new Tile(14, "Knokke\n Kustlaan", QColor(216, 27, 171),10, 10, calculateTilePosition(14),m_scene);
+    tiles[15] = new Tile(15, "Station\n Centraal", Qt::black,60, 15, calculateTilePosition(15), m_scene);
+    tiles[16] = new Tile(16, "Brugge\n Steenstraat", QColor(237, 124, 45), 30, 15, calculateTilePosition(16), m_scene);
+    tiles[17] = new Tile(17, "Algemeen\n Fonds", Qt::lightGray, 10, 15, calculateTilePosition(17), m_scene);
+    tiles[18] = new Tile(18, "Oostende\n Kapelstraat", QColor(237, 124, 45),9, 4, calculateTilePosition(18), m_scene);
+    tiles[19] = new Tile(19, "Kortrijk\n Rijselstraat", QColor(237, 124, 45),10, 5, calculateTilePosition(19), m_scene);
+    tiles[20] = new Tile(20, "Vrije\n Parking", Qt::blue, 0,0, calculateTilePosition(20), m_scene);
+    tiles[21] = new Tile(21, "Tienen\n Leuvensestr.", QColor(237, 28, 36), 20, 10, calculateTilePosition(21), m_scene);
+    tiles[22] = new Tile(22, "Kans", Qt::lightGray, 10, 5, calculateTilePosition(22),m_scene);
+    tiles[23] = new Tile(23, "Gent\n Kortrijksestr.", QColor(237, 28, 36), 5, 10, calculateTilePosition(23), m_scene);
+    tiles[24] = new Tile(24, "Hasselt\n Grote Markt", QColor(237, 28, 36), 10, 8, calculateTilePosition(24), m_scene);
+    tiles[25] = new Tile(25, "Buurt-\nSpoorwegen", Qt::black, 10, 10, calculateTilePosition(25),m_scene);
+    tiles[26] = new Tile(26, "Antwerpen\n Groenplaats", QColor(251, 242, 54), 8, 4, calculateTilePosition(26), m_scene);
+    tiles[27] = new Tile(27, "Brussel\n Lakenstraat", QColor(251, 242, 54), 9, 3, calculateTilePosition(27), m_scene);
+    tiles[28] = new Tile(28, "Waterdienst", Qt::cyan, 6, 3, calculateTilePosition(28), m_scene);
+    tiles[29] = new Tile(29, "Gent\n Veldstraat", QColor(251, 242, 54), 4, 2, calculateTilePosition(29), m_scene);
+    tiles[30] = new Tile(30, "Go To Jail", Qt::blue,0, 0, calculateTilePosition(30), m_scene);
+    tiles[31] = new Tile(31, "Antwerpen\n Huidevettersstraat", QColor(29, 178, 74),40, 30, calculateTilePosition(31), m_scene);
+    tiles[32] = new Tile(32, "Gent\n Vlaanderenstraat", QColor(29, 178, 74),20,30, calculateTilePosition(32), m_scene);
+    tiles[33] = new Tile(33, "Algemeen\n Fonds", Qt::lightGray,50,20, calculateTilePosition(33),m_scene);
+    tiles[34] = new Tile(34, "Hasselt\n Demerstraat", QColor(29, 178, 74), 80, 20, calculateTilePosition(34), m_scene);
+    tiles[35] = new Tile(35, "Station Zuid", Qt::black, 140, 60, calculateTilePosition(35),m_scene);
+    tiles[36] = new Tile(36, "Kans", Qt::lightGray,60, 120, calculateTilePosition(36), m_scene);
+    tiles[37] = new Tile(37, "Antwerpen\n Meir", QColor(13, 46, 146),200, 80, calculateTilePosition(37), m_scene);
+    tiles[38] = new Tile(38, "Extra\n Belasting", Qt::gray, 300, 200, calculateTilePosition(38),m_scene);
+    tiles[39] = new Tile(39, "Brussel\n Nieuwstraat", QColor(13, 46, 146), 100, 90, calculateTilePosition(39),m_scene);
 
     // Add all tiles to the scene
     for (Tile* tile : tiles) {
         if (tile) {
-            scene->addItem(tile->getGraphics());
-            scene->addItem(tile->getLabel());
+            m_scene->addItem(tile->getGraphics());
+            m_scene->addItem(tile->getLabel());
         }
     }
+    // Add center image/logo
+    QGraphicsPixmapItem *logo = new QGraphicsPixmapItem(QPixmap(":/monopoly/markopoly.png"));
+    logo->setPos(300, 300); // Center position
+    m_scene->addItem(logo);
 }
 
-QPointF Board::calculateTilePosition(int index) const {
-    const int TILE_SIZE = 80;
-    const int TILES_PER_SIDE = 11;
-    const int BOARD_SIZE = TILE_SIZE * TILES_PER_SIDE;
 
+QPointF Board::calculateTilePosition(int index) const {
     index = index % 40;
 
     if (index < 10) { // Bottom side (0–9): right to left

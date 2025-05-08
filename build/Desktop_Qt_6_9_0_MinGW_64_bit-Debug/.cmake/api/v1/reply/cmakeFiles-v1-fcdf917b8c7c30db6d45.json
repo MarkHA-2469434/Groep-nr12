@@ -25,6 +25,7 @@
 			"expression" : "C:/Users/markh/OneDrive/Documenten/MonopolyQt/*.cpp",
 			"paths" : 
 			[
+				"C:/Users/markh/OneDrive/Documenten/MonopolyQt/board.cpp",
 				"C:/Users/markh/OneDrive/Documenten/MonopolyQt/build/Desktop_Qt_6_9_0_MinGW_64_bit-Debug/CMakeFiles/3.30.5/CompilerIdCXX/CMakeCXXCompilerId.cpp",
 				"C:/Users/markh/OneDrive/Documenten/MonopolyQt/build/Desktop_Qt_6_9_0_MinGW_64_bit-Debug/MonopolyQt_autogen/EWIEGA46WW/moc_mainwindow.cpp",
 				"C:/Users/markh/OneDrive/Documenten/MonopolyQt/build/Desktop_Qt_6_9_0_MinGW_64_bit-Debug/MonopolyQt_autogen/mocs_compilation.cpp",
@@ -45,6 +46,7 @@
 			"expression" : "C:/Users/markh/OneDrive/Documenten/MonopolyQt/*.h",
 			"paths" : 
 			[
+				"C:/Users/markh/OneDrive/Documenten/MonopolyQt/board.h",
 				"C:/Users/markh/OneDrive/Documenten/MonopolyQt/build/Desktop_Qt_6_9_0_MinGW_64_bit-Debug/MonopolyQt_autogen/include/ui_mainwindow.h",
 				"C:/Users/markh/OneDrive/Documenten/MonopolyQt/build/Desktop_Qt_6_9_0_MinGW_64_bit-Debug/MonopolyQt_autogen/moc_predefs.h",
 				"C:/Users/markh/OneDrive/Documenten/MonopolyQt/dice.h",
@@ -96,7 +98,10 @@
 		},
 		{
 			"expression" : "C:/Users/markh/OneDrive/Documenten/MonopolyQt/*.qrc",
-			"paths" : [],
+			"paths" : 
+			[
+				"C:/Users/markh/OneDrive/Documenten/MonopolyQt/images.qrc"
+			],
 			"recurse" : true
 		},
 		{

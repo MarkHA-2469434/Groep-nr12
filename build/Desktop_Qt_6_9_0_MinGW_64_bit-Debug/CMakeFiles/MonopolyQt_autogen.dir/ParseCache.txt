@@ -136,6 +136,7 @@ C:/Users/markh/OneDrive/Documenten/MonopolyQt/mainwindow.h
  mdp:C:/Qt/6.9.0/mingw_64/include/QtCore/qversiontagging.h
  mdp:C:/Qt/6.9.0/mingw_64/include/QtCore/qxptype_traits.h
  mdp:C:/Qt/6.9.0/mingw_64/include/QtCore/qyieldcpu.h
+ mdp:C:/Qt/6.9.0/mingw_64/include/QtGui/QColor
  mdp:C:/Qt/6.9.0/mingw_64/include/QtGui/qaction.h
  mdp:C:/Qt/6.9.0/mingw_64/include/QtGui/qbitmap.h
  mdp:C:/Qt/6.9.0/mingw_64/include/QtGui/qbrush.h
@@ -168,7 +169,9 @@ C:/Users/markh/OneDrive/Documenten/MonopolyQt/mainwindow.h
  mdp:C:/Qt/6.9.0/mingw_64/include/QtGui/qwindowdefs_win.h
  mdp:C:/Qt/6.9.0/mingw_64/include/QtWidgets/QGraphicsItem
  mdp:C:/Qt/6.9.0/mingw_64/include/QtWidgets/QGraphicsPixmapItem
+ mdp:C:/Qt/6.9.0/mingw_64/include/QtWidgets/QGraphicsRectItem
  mdp:C:/Qt/6.9.0/mingw_64/include/QtWidgets/QGraphicsScene
+ mdp:C:/Qt/6.9.0/mingw_64/include/QtWidgets/QGraphicsTextItem
  mdp:C:/Qt/6.9.0/mingw_64/include/QtWidgets/QGraphicsView
  mdp:C:/Qt/6.9.0/mingw_64/include/QtWidgets/QMainWindow
  mdp:C:/Qt/6.9.0/mingw_64/include/QtWidgets/qabstractscrollarea.h

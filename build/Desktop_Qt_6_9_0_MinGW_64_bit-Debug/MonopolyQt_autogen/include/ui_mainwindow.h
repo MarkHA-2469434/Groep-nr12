@@ -49,7 +49,7 @@ public:
         centralwidget->setObjectName("centralwidget");
         boardView = new QGraphicsView(centralwidget);
         boardView->setObjectName("boardView");
-        boardView->setGeometry(QRect(10, 10, 931, 871));
+        boardView->setGeometry(QRect(10, 10, 1000, 1000));
         rollButton = new QPushButton(centralwidget);
         rollButton->setObjectName("rollButton");
         rollButton->setGeometry(QRect(990, 330, 121, 41));
@@ -77,10 +77,10 @@ public:
         propertyGroup->setGeometry(QRect(990, 150, 211, 131));
         propertyNameLabel = new QLabel(propertyGroup);
         propertyNameLabel->setObjectName("propertyNameLabel");
-        propertyNameLabel->setGeometry(QRect(0, 20, 101, 16));
+        propertyNameLabel->setGeometry(QRect(0, 20, 241, 31));
         propertyPriceLabel = new QLabel(propertyGroup);
         propertyPriceLabel->setObjectName("propertyPriceLabel");
-        propertyPriceLabel->setGeometry(QRect(0, 40, 51, 16));
+        propertyPriceLabel->setGeometry(QRect(0, 50, 81, 16));
         MainWindow->setCentralWidget(centralwidget);
         menubar = new QMenuBar(MainWindow);
         menubar->setObjectName("menubar");

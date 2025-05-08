@@ -75,13 +75,13 @@
 			{
 				"command" : 4,
 				"file" : 1,
-				"line" : 78,
+				"line" : 79,
 				"parent" : 0
 			},
 			{
 				"command" : 5,
 				"file" : 1,
-				"line" : 61,
+				"line" : 62,
 				"parent" : 0
 			},
 			{
@@ -368,18 +368,19 @@
 				7,
 				9,
 				11,
-				13
+				13,
+				17
 			]
 		}
 	],
 	"dependencies" : 
 	[
 		{
-			"backtrace" : 0,
-			"id" : "MonopolyQt_autogen::@6890427a1f51a3e7e1df"
+			"id" : "MonopolyQt_autogen_timestamp_deps::@6890427a1f51a3e7e1df"
 		},
 		{
-			"id" : "MonopolyQt_autogen_timestamp_deps::@6890427a1f51a3e7e1df"
+			"backtrace" : 0,
+			"id" : "MonopolyQt_autogen::@6890427a1f51a3e7e1df"
 		}
 	],
 	"id" : "MonopolyQt::@6890427a1f51a3e7e1df",
@@ -495,7 +496,8 @@
 				7,
 				9,
 				11,
-				13
+				13,
+				17
 			]
 		},
 		{
@@ -507,7 +509,7 @@
 				8,
 				10,
 				12,
-				14
+				15
 			]
 		},
 		{
@@ -522,14 +524,22 @@
 			"sourceIndexes" : 
 			[
 				5,
-				15
+				16
+			]
+		},
+		{
+			"name" : "Resources",
+			"sourceIndexes" : 
+			[
+				14
 			]
 		},
 		{
 			"name" : "CMake Rules",
 			"sourceIndexes" : 
 			[
-				16
+				18,
+				19
 			]
 		}
 	],
@@ -614,6 +624,11 @@
 			"sourceGroupIndex" : 0
 		},
 		{
+			"backtrace" : 4,
+			"path" : "images.qrc",
+			"sourceGroupIndex" : 4
+		},
+		{
 			"backtrace" : 0,
 			"isGenerated" : true,
 			"path" : "build/Desktop_Qt_6_9_0_MinGW_64_bit-Debug/MonopolyQt_autogen/include/ui_mainwindow.h",
@@ -627,9 +642,22 @@
 		},
 		{
 			"backtrace" : 0,
+			"compileGroupIndex" : 0,
+			"isGenerated" : true,
+			"path" : "build/Desktop_Qt_6_9_0_MinGW_64_bit-Debug/MonopolyQt_autogen/EWIEGA46WW/qrc_images.cpp",
+			"sourceGroupIndex" : 0
+		},
+		{
+			"backtrace" : 0,
 			"isGenerated" : true,
 			"path" : "build/Desktop_Qt_6_9_0_MinGW_64_bit-Debug/MonopolyQt_autogen/timestamp.rule",
-			"sourceGroupIndex" : 4
+			"sourceGroupIndex" : 5
+		},
+		{
+			"backtrace" : 0,
+			"isGenerated" : true,
+			"path" : "build/Desktop_Qt_6_9_0_MinGW_64_bit-Debug/MonopolyQt_autogen/EWIEGA46WW/qrc_images.cpp.rule",
+			"sourceGroupIndex" : 5
 		}
 	],
 	"type" : "EXECUTABLE"

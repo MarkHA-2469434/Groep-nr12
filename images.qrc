@@ -1,0 +1,5 @@
+<RCC>
+    <qresource prefix="/monopoly">
+        <file>markopoly.png</file>
+    </qresource>
+</RCC>

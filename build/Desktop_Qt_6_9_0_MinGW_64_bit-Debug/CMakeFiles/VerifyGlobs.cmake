@@ -156,6 +156,7 @@ endif()
 # _directory_contents at C:/Qt/6.9.0/mingw_64/lib/cmake/Qt6LinguistTools/Qt6LinguistToolsMacros.cmake:55 (file)
 file(GLOB_RECURSE NEW_GLOB LIST_DIRECTORIES false "C:/Users/markh/OneDrive/Documenten/MonopolyQt/*.qrc")
 set(OLD_GLOB
+  "C:/Users/markh/OneDrive/Documenten/MonopolyQt/images.qrc"
   )
 if(NOT "${NEW_GLOB}" STREQUAL "${OLD_GLOB}")
   message("-- GLOB mismatch!")

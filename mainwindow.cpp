@@ -6,7 +6,10 @@
 #include <QRandomGenerator>
 #include <QTimer>
 #include <QTextBlock>
+#include <QLabel>
+#include <QString>
 #include "dice.h"
+#include "board.h"
 
 
 MainWindow::MainWindow(QWidget *parent)
@@ -18,8 +21,8 @@ MainWindow::MainWindow(QWidget *parent)
     //initialisatie
     scene = new QGraphicsScene(this);
     scene->setSceneRect(0,0,BOARD_SIZE, BOARD_SIZE);
-
     ui->boardView->setScene(scene);
+
     //basis
     ui->boardView->setRenderHint(QPainter::Antialiasing);
 
@@ -30,61 +33,25 @@ MainWindow::MainWindow(QWidget *parent)
     board = new Board(scene);
     board->create();
 
-    // Add center image/logo
-    QGraphicsPixmapItem *logo = new QGraphicsPixmapItem(QPixmap(":/images/monopoly.png"));
-    logo->setPos(300, 300); // Center position
-    scene->addItem(logo);
-
     //create player
-    player = new Player(scene, Qt::cyan);
+    player = new Player(scene, Qt::cyan, "Player 1");
+    currentPlayer = player;
     scene->addItem(player->getToken());
+
+    propertyInfoDisplay = new QGraphicsTextItem();
+    propertyInfoDisplay->setZValue(100);
+    propertyInfoDisplay->setPos(350, 350);
+    scene->addItem(propertyInfoDisplay);
+
+    ui->buyButton->setEnabled(false);
+    ui->propertyNameLabel->setAlignment(Qt::AlignCenter);
+    ui->propertyPriceLabel->setAlignment(Qt::AlignCenter);
+
     movePlayer(0); //go to go
+
 
     connect(ui->buyButton, &QPushButton::clicked, this, &MainWindow::on_buyButton_clicked);
 }
-
-void MainWindow::createProperty(int index, const QString& name, QColor color)
-{
-    QPointF position = board->calculateTilePosition(index);
-
-    // Manual positioning for corners
-    switch(index) {
-    case 0: position = QPointF((TILES_PER_SIDE - 1) * TILE_SIZE, BOARD_SIZE - TILE_SIZE); break; // Tile 0
-    case 10: position = QPointF(0, (TILES_PER_SIDE - 1) * TILE_SIZE); break; // Tile 10
-    case 20: position = QPointF(0, 0); break; // Tile 20
-    case 30: position = QPointF((TILES_PER_SIDE - 1) * TILE_SIZE, 0); break; // Tile 30
-    }
-
-    //tile making
-    QGraphicsRectItem *tile = new QGraphicsRectItem(0,0, TILE_SIZE, TILE_SIZE);
-    tile->setPos(position);
-    tile->setBrush(color);
-    tile->setPen(QPen(Qt::black, 1));
-    scene->addItem(tile);
-
-    //add property name
-    QGraphicsTextItem *text = new QGraphicsTextItem(name);
-    text->setTextWidth(TILE_SIZE - 10);
-    text->setDefaultTextColor(Qt::black);
-
-    QFont font = text->font();
-    font.setPointSize(6);
-    font.setBold(true);
-    text->setFont(font);
-
-    QTextBlockFormat format;
-    QTextCursor cursor = QTextCursor(text->document());
-    cursor.select(QTextCursor::Document);
-    format.setAlignment(Qt::AlignCenter);
-    cursor.mergeBlockFormat(format);
-
-    text->setPos(position.x() + 5, position.y() + 5);
-    text->setZValue(2);
-    scene->addItem(text);
-
-    qDebug() << "Tile" << index << "position:" << position;
-}
-
 
 void MainWindow::on_rollButton_released()
 {
@@ -101,24 +68,75 @@ void MainWindow::on_rollButton_released()
         animatePlayerMovement(total);
         ui->rollButton->setEnabled(true);
     });
-
 }
 
 void MainWindow::on_buyButton_clicked()
 {
-    ui->statusLabel->setText("Property purchased");
+    if (!currentTile || currentTile->isOwned()) return;
+
+    if (currentPlayer->getMoney() >= currentTile->getPrice()) {
+        currentPlayer->deductMoney(currentTile->getPrice());
+        currentTile->setOwner(currentPlayer);
+
+        ui->statusLabel->setText(QString("%1 bought %2 for $%3!")
+                                     .arg(currentPlayer->getName())
+                                     .arg(currentTile->getName())
+                                     .arg(currentTile->getPrice()));
+        handleLanding(currentTile->getIndex());
+    }
+    else {
+        ui->statusLabel->setText("Not enough money to buy this property");
+    }
 }
 
 void MainWindow::movePlayer(int index){
-    player->setPosition(index);
     QPointF tilePos = board->calculateTilePosition(index);
-    player->getToken()->setPos(tilePos.x() + 25, tilePos.y() + 25);
-
+    player->moveTo(index, tilePos);
+    handleLanding(index);
 }
 
 void MainWindow::handleLanding(int position){
-    qDebug() << "Landed on property index: " << position;
-}
+    currentTile = board->getTile(position);
+    if (!currentTile) return;
+
+    // Update property name label
+    ui->propertyNameLabel->setText(currentTile->getName());
+
+    // Update property price label (if purchasable)
+    if (currentTile->getPrice() > 0) {
+        QString priceText = (QString("Price: $%1\nRent: $%2")
+                                            .arg(currentTile->getPrice())
+                                            .arg(currentTile->getRent()));
+        if (currentTile->isOwned()) {
+            priceText += QString("\n(Owned by %1)").arg(currentTile->getOwner()->getName());
+        }
+        ui->propertyPriceLabel->setText(priceText);
+    }
+    else {
+        QString specialText;
+        switch(currentTile->getIndex()) {
+        case 0: specialText = "Collect $200"; break;
+        case 10: specialText = "Just Visiting"; break;
+        case 20: specialText = "Free Parking"; break;
+        case 30: specialText = "Go to Jail"; break;
+        default: specialText = "Not for sale";
+        }
+        ui->propertyPriceLabel->setText(specialText);
+    }
+    bool canBuy = !currentTile->isOwned() &&
+                  currentTile->getPrice() > 0 &&
+                  currentPlayer->getMoney() >= currentTile->getPrice();
+    ui->buyButton->setEnabled(canBuy);
+
+    // Highlight current tile
+    if (lastHighlightedTile) {
+        lastHighlightedTile->highlight(false);
+    }
+    currentTile->highlight(true);
+    lastHighlightedTile = currentTile;
+
+    }
+
 
 void MainWindow::animatePlayerMovement(int steps){
     if(isMoving) return;
