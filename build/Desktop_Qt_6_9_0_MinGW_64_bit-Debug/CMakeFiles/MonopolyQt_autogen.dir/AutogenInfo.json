@@ -343,15 +343,15 @@
 	"HEADERS" : 
 	[
 		[
-			"C:/Users/markh/OneDrive/Documenten/MonopolyQt/bord.h",
+			"C:/Users/markh/OneDrive/Documenten/MonopolyQt/board.h",
 			"MU",
-			"EWIEGA46WW/moc_bord.cpp",
+			"EWIEGA46WW/moc_board.cpp",
 			null
 		],
 		[
-			"C:/Users/markh/OneDrive/Documenten/MonopolyQt/dobbelsteen.h",
+			"C:/Users/markh/OneDrive/Documenten/MonopolyQt/dice.h",
 			"MU",
-			"EWIEGA46WW/moc_dobbelsteen.cpp",
+			"EWIEGA46WW/moc_dice.cpp",
 			null
 		],
 		[
@@ -361,9 +361,15 @@
 			null
 		],
 		[
-			"C:/Users/markh/OneDrive/Documenten/MonopolyQt/speler.h",
+			"C:/Users/markh/OneDrive/Documenten/MonopolyQt/player.h",
 			"MU",
-			"EWIEGA46WW/moc_speler.cpp",
+			"EWIEGA46WW/moc_player.cpp",
+			null
+		],
+		[
+			"C:/Users/markh/OneDrive/Documenten/MonopolyQt/tile.h",
+			"MU",
+			"EWIEGA46WW/moc_tile.cpp",
 			null
 		]
 	],
@@ -438,12 +444,8 @@
 	"SETTINGS_FILE" : "C:/Users/markh/OneDrive/Documenten/MonopolyQt/build/Desktop_Qt_6_9_0_MinGW_64_bit-Debug/CMakeFiles/MonopolyQt_autogen.dir/AutogenUsed.txt",
 	"SOURCES" : 
 	[
-		[ "C:/Users/markh/OneDrive/Documenten/MonopolyQt/bord.cpp", "MU", null ],
-		[
-			"C:/Users/markh/OneDrive/Documenten/MonopolyQt/dobbelsteen.cpp",
-			"MU",
-			null
-		],
+		[ "C:/Users/markh/OneDrive/Documenten/MonopolyQt/board.cpp", "MU", null ],
+		[ "C:/Users/markh/OneDrive/Documenten/MonopolyQt/dice.cpp", "MU", null ],
 		[ "C:/Users/markh/OneDrive/Documenten/MonopolyQt/main.cpp", "MU", null ],
 		[
 			"C:/Users/markh/OneDrive/Documenten/MonopolyQt/mainwindow.cpp",
@@ -451,10 +453,11 @@
 			null
 		],
 		[
-			"C:/Users/markh/OneDrive/Documenten/MonopolyQt/speler.cpp",
+			"C:/Users/markh/OneDrive/Documenten/MonopolyQt/player.cpp",
 			"MU",
 			null
-		]
+		],
+		[ "C:/Users/markh/OneDrive/Documenten/MonopolyQt/tile.cpp", "MU", null ]
 	],
 	"UIC_OPTIONS" : [],
 	"UIC_SEARCH_PATHS" : [],

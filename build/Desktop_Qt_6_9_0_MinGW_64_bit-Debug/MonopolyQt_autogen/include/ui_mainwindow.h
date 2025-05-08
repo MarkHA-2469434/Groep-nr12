@@ -44,29 +44,28 @@ public:
     {
         if (MainWindow->objectName().isEmpty())
             MainWindow->setObjectName("MainWindow");
-        MainWindow->resize(1079, 859);
+        MainWindow->resize(1259, 929);
         centralwidget = new QWidget(MainWindow);
         centralwidget->setObjectName("centralwidget");
         boardView = new QGraphicsView(centralwidget);
         boardView->setObjectName("boardView");
-        boardView->setGeometry(QRect(10, 10, 810, 810));
-        boardView->setMinimumSize(QSize(256, 0));
+        boardView->setGeometry(QRect(10, 10, 931, 871));
         rollButton = new QPushButton(centralwidget);
         rollButton->setObjectName("rollButton");
-        rollButton->setGeometry(QRect(830, 250, 121, 41));
+        rollButton->setGeometry(QRect(990, 330, 121, 41));
         rollButton->setStyleSheet(QString::fromUtf8("QPushButton { background-color: #4CAF50; color: white; }"));
         diceLabel = new QLabel(centralwidget);
         diceLabel->setObjectName("diceLabel");
-        diceLabel->setGeometry(QRect(830, 220, 121, 16));
+        diceLabel->setGeometry(QRect(990, 300, 121, 16));
         buyButton = new QPushButton(centralwidget);
         buyButton->setObjectName("buyButton");
-        buyButton->setGeometry(QRect(830, 310, 121, 21));
+        buyButton->setGeometry(QRect(990, 390, 121, 21));
         statusLabel = new QLabel(centralwidget);
         statusLabel->setObjectName("statusLabel");
-        statusLabel->setGeometry(QRect(950, 220, 131, 16));
+        statusLabel->setGeometry(QRect(1110, 300, 131, 16));
         playerGroup = new QGroupBox(centralwidget);
         playerGroup->setObjectName("playerGroup");
-        playerGroup->setGeometry(QRect(830, 10, 211, 91));
+        playerGroup->setGeometry(QRect(990, 10, 211, 131));
         playerNameLabel = new QLabel(playerGroup);
         playerNameLabel->setObjectName("playerNameLabel");
         playerNameLabel->setGeometry(QRect(0, 20, 101, 20));
@@ -75,7 +74,7 @@ public:
         moneyLabel->setGeometry(QRect(0, 40, 111, 16));
         propertyGroup = new QGroupBox(centralwidget);
         propertyGroup->setObjectName("propertyGroup");
-        propertyGroup->setGeometry(QRect(830, 120, 211, 76));
+        propertyGroup->setGeometry(QRect(990, 150, 211, 131));
         propertyNameLabel = new QLabel(propertyGroup);
         propertyNameLabel->setObjectName("propertyNameLabel");
         propertyNameLabel->setGeometry(QRect(0, 20, 101, 16));
@@ -85,7 +84,7 @@ public:
         MainWindow->setCentralWidget(centralwidget);
         menubar = new QMenuBar(MainWindow);
         menubar->setObjectName("menubar");
-        menubar->setGeometry(QRect(0, 0, 1079, 25));
+        menubar->setGeometry(QRect(0, 0, 1259, 21));
         MainWindow->setMenuBar(menubar);
         statusbar = new QStatusBar(MainWindow);
         statusbar->setObjectName("statusbar");

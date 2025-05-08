@@ -1,0 +1,25 @@
+#include "Player.h"
+#include <QGraphicsEllipseItem>
+
+Player::Player(QGraphicsScene* scene, QColor color) : position(0), playerColor(color) {
+    token = new QGraphicsEllipseItem(0, 0, 30, 30);
+    token->setBrush(Qt::cyan);
+    scene->addItem(token);
+}
+
+void Player::moveTo(int index, const QPointF& pos) {
+    position = index;
+    token->setPos(pos.x() + 25, pos.y() + 25);
+}
+
+QGraphicsItem* Player::getToken() const {
+    return token;
+}
+
+void Player::setPosition(int position) {
+    this->position = position;
+}
+
+int Player::getPosition() const {
+    return position;
+}
