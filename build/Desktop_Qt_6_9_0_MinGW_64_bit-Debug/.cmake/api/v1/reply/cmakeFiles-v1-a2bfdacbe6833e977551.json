@@ -25,14 +25,18 @@
 			"expression" : "C:/Users/markh/OneDrive/Documenten/MonopolyQt/*.cpp",
 			"paths" : 
 			[
+				"C:/Users/markh/OneDrive/Documenten/MonopolyQt/Kans_AlgFonds.cpp",
 				"C:/Users/markh/OneDrive/Documenten/MonopolyQt/board.cpp",
 				"C:/Users/markh/OneDrive/Documenten/MonopolyQt/build/Desktop_Qt_6_9_0_MinGW_64_bit-Debug/CMakeFiles/3.30.5/CompilerIdCXX/CMakeCXXCompilerId.cpp",
+				"C:/Users/markh/OneDrive/Documenten/MonopolyQt/build/Desktop_Qt_6_9_0_MinGW_64_bit-Debug/MonopolyQt_autogen/EWIEGA46WW/moc_Player.cpp",
+				"C:/Users/markh/OneDrive/Documenten/MonopolyQt/build/Desktop_Qt_6_9_0_MinGW_64_bit-Debug/MonopolyQt_autogen/EWIEGA46WW/moc_game.cpp",
 				"C:/Users/markh/OneDrive/Documenten/MonopolyQt/build/Desktop_Qt_6_9_0_MinGW_64_bit-Debug/MonopolyQt_autogen/EWIEGA46WW/moc_mainwindow.cpp",
 				"C:/Users/markh/OneDrive/Documenten/MonopolyQt/build/Desktop_Qt_6_9_0_MinGW_64_bit-Debug/MonopolyQt_autogen/mocs_compilation.cpp",
 				"C:/Users/markh/OneDrive/Documenten/MonopolyQt/dice.cpp",
 				"C:/Users/markh/OneDrive/Documenten/MonopolyQt/main.cpp",
 				"C:/Users/markh/OneDrive/Documenten/MonopolyQt/mainwindow.cpp",
 				"C:/Users/markh/OneDrive/Documenten/MonopolyQt/player.cpp",
+				"C:/Users/markh/OneDrive/Documenten/MonopolyQt/playermenu.cpp",
 				"C:/Users/markh/OneDrive/Documenten/MonopolyQt/tile.cpp"
 			],
 			"recurse" : true
@@ -46,12 +50,12 @@
 			"expression" : "C:/Users/markh/OneDrive/Documenten/MonopolyQt/*.h",
 			"paths" : 
 			[
-				"C:/Users/markh/OneDrive/Documenten/MonopolyQt/board.h",
+				"C:/Users/markh/OneDrive/Documenten/MonopolyQt/Board.h",
+				"C:/Users/markh/OneDrive/Documenten/MonopolyQt/Player.h",
 				"C:/Users/markh/OneDrive/Documenten/MonopolyQt/build/Desktop_Qt_6_9_0_MinGW_64_bit-Debug/MonopolyQt_autogen/include/ui_mainwindow.h",
 				"C:/Users/markh/OneDrive/Documenten/MonopolyQt/build/Desktop_Qt_6_9_0_MinGW_64_bit-Debug/MonopolyQt_autogen/moc_predefs.h",
 				"C:/Users/markh/OneDrive/Documenten/MonopolyQt/dice.h",
 				"C:/Users/markh/OneDrive/Documenten/MonopolyQt/mainwindow.h",
-				"C:/Users/markh/OneDrive/Documenten/MonopolyQt/player.h",
 				"C:/Users/markh/OneDrive/Documenten/MonopolyQt/tile.h"
 			],
 			"recurse" : true
