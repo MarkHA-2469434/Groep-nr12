@@ -2,30 +2,35 @@
 #define PLAYER_H
 #include <QGraphicsItem>
 #include <QGraphicsScene>
-#include <QColor>
-#include <QString>
 
 class Player {
 public:
-    Player(QGraphicsScene* scene, QColor color, const QString& name);
+    int Balance = 1500;
+    bool inJail = false;
+    bool Bankrupt = false;
+    int aantalHuizen = 0;
+    int aantalHotels = 0;
+    Player(QGraphicsScene* scene, QColor color);
+    void moveTo(int index, const QPointF& pos);
     QGraphicsItem* getToken() const;
     int getPosition() const;
+    int getPrevPosition()const;
     void setPosition(int position);
+    int prevPosition;
 
-    void moveTo(int index, const QPointF& pos);
 
-    QString getName() const {return name;}
-    QColor getColor() const;
-    int getMoney() const {return money;}
-    void deductMoney(int amount) {money -= amount;}
+    void voegGeldToe(int bedrag) {
+        Balance += bedrag;
+    }
+
+    void trekGeldAf(int bedrag) {
+        Balance -= bedrag;
+    }
 
 private:
     QGraphicsEllipseItem* token;
     int position;
     QColor playerColor;
-
-    QString name;
-    int money = 1500;
 };
 
 

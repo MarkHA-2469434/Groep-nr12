@@ -1,13 +1,18 @@
 #ifndef MAINWINDOW_H
 #define MAINWINDOW_H
+
 #include <QMainWindow>
 #include <QGraphicsScene>
-#include <QGraphicsView>
+#include <QList>
 #include <QTimer>
 #include <QGraphicsPixmapItem>
 
 #include "Board.h"
 #include "Player.h"
+
+class Board;
+class Player;
+class Tile;
 
 QT_BEGIN_NAMESPACE
 namespace Ui {
@@ -22,16 +27,17 @@ class MainWindow : public QMainWindow
 public:
     MainWindow(QWidget *parent = nullptr);
     ~MainWindow();
+    void movePlayer(int index);
+    void handleLanding(int position);
 
 private slots:
     void on_buyButton_clicked();
-    void handleLanding(int position);
     void on_rollButton_released();
 
 private:
     Ui::MainWindow *ui;
     QGraphicsScene *scene;
-    QGraphicsTextItem* propertyInfoDisplay;
+
     Player *player;
     Board *board;
     QList<QTimer*> moveTimers;
@@ -44,15 +50,7 @@ private:
     void createBoard();
     void createProperty(int index, const QString& name, QColor color);
     void animatePlayerMovement(int steps);
-    void movePlayer(int index);
-
-    void updateUI();
-    void showPropertyInfo(Tile* tile);
 
     QGraphicsEllipseItem* playerToken = nullptr;
-
-    Tile* currentTile = nullptr;
-    Tile* lastHighlightedTile = nullptr;
-    Player* currentPlayer = nullptr;
 };
 #endif // MAINWINDOW_H

@@ -343,9 +343,15 @@
 	"HEADERS" : 
 	[
 		[
-			"C:/Users/markh/OneDrive/Documenten/MonopolyQt/board.h",
+			"C:/Users/markh/OneDrive/Documenten/MonopolyQt/Board.h",
 			"MU",
-			"EWIEGA46WW/moc_board.cpp",
+			"EWIEGA46WW/moc_Board.cpp",
+			null
+		],
+		[
+			"C:/Users/markh/OneDrive/Documenten/MonopolyQt/Player.h",
+			"MU",
+			"EWIEGA46WW/moc_Player.cpp",
 			null
 		],
 		[
@@ -358,12 +364,6 @@
 			"C:/Users/markh/OneDrive/Documenten/MonopolyQt/mainwindow.h",
 			"MU",
 			"EWIEGA46WW/moc_mainwindow.cpp",
-			null
-		],
-		[
-			"C:/Users/markh/OneDrive/Documenten/MonopolyQt/player.h",
-			"MU",
-			"EWIEGA46WW/moc_player.cpp",
 			null
 		],
 		[
@@ -444,6 +444,11 @@
 	"SETTINGS_FILE" : "C:/Users/markh/OneDrive/Documenten/MonopolyQt/build/Desktop_Qt_6_9_0_MinGW_64_bit-Debug/CMakeFiles/MonopolyQt_autogen.dir/AutogenUsed.txt",
 	"SOURCES" : 
 	[
+		[
+			"C:/Users/markh/OneDrive/Documenten/MonopolyQt/Kans_AlgFonds.cpp",
+			"MU",
+			null
+		],
 		[ "C:/Users/markh/OneDrive/Documenten/MonopolyQt/board.cpp", "MU", null ],
 		[ "C:/Users/markh/OneDrive/Documenten/MonopolyQt/dice.cpp", "MU", null ],
 		[ "C:/Users/markh/OneDrive/Documenten/MonopolyQt/main.cpp", "MU", null ],

@@ -28,8 +28,13 @@ if(${QT_VERSION_MAJOR} GREATER_EQUAL 6)
         ${PROJECT_SOURCES}
         tile.h tile.cpp
         dice.h dice.cpp
-        player.h player.cpp
+
         board.h board.cpp
+
+
+        player.h player.cpp
+        Kans_AlgFonds.cpp
+
 
 
 
