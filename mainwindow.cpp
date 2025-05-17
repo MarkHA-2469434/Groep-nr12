@@ -21,7 +21,6 @@ MainWindow::MainWindow(QWidget *parent)
     scene->setSceneRect(0,0,BOARD_SIZE, BOARD_SIZE);
 
     ui->boardView->setScene(scene);
-    //basis
     ui->boardView->setRenderHint(QPainter::Antialiasing);
 
     ui->boardView->setFixedSize(BOARD_SIZE + 2, BOARD_SIZE + 2);
@@ -39,12 +38,34 @@ MainWindow::MainWindow(QWidget *parent)
 
 
     //create players
-    player = new Player(scene, Qt::cyan);
-    scene->addItem(player->getToken());
-    movePlayer(0); //go to go
-    ui->BalanceLabel->setText(QString::number(player->Balance));
+    PlayerSetup setupDialog(this);
+    if (setupDialog.exec() == QDialog::Accepted) {
+        QVector<QString> playerNames = setupDialog.getPlayerNames();
 
-    connect(ui->buyButton, &QPushButton::clicked, this, &MainWindow::on_buyButton_clicked);
+        // Create players
+        for (int i = 0; i < playerNames.size(); ++i) {
+            QColor color;
+            switch(i) {
+            case 0: color = Qt::red; break;
+            case 1: color = Qt::blue; break;
+            case 2: color = Qt::green; break;
+            case 3: color = Qt::yellow; break;
+            case 4: color = Qt::cyan; break;
+            case 5: color = Qt::magenta; break;
+            case 6: color = Qt::darkYellow; break;
+            case 7: color = Qt::gray; break;
+            default: color = Qt::white;
+            }
+
+            Player* player = new Player(scene, color);
+            player->setName(playerNames[i]);
+            players.append(player);
+            movePlayer(0, player); // Move to start
+        }
+
+        currentPlayer = players.first();
+        updatePlayerUI();
+    }
 }
 
 void MainWindow::createProperty(int index, const QString& name, QColor color)
@@ -93,10 +114,9 @@ void MainWindow::createProperty(int index, const QString& name, QColor color)
 void MainWindow::on_rollButton_released()
 {
     if (isMoving) return;
-
     ui->rollButton->setEnabled(false);
+
     ui->diceLabel->setText("Rolling...");
-    player->prevPosition = player->getPosition();
     QTimer::singleShot(800, [this] (){
         auto [dice1,dice2] = Dice::roll();
         int total = dice1 + dice2;
@@ -112,21 +132,44 @@ void MainWindow::on_buyButton_clicked()
     ui->statusLabel->setText("Property purchased");
 }
 
-void MainWindow::movePlayer(int index){
+void MainWindow::movePlayer(int index, Player* player){
+    if (!player) player = currentPlayer;
+    if (!player) return;
+
     player->setPosition(index);
     QPointF tilePos = board->calculateTilePosition(index);
     player->getToken()->setPos(tilePos.x() + 25, tilePos.y() + 25);
-
 }
 
+void MainWindow::updatePlayerUI() {
+    if (!currentPlayer) return;
+
+    ui->playerNameLabel->setText(currentPlayer->getName());
+    ui->BalanceLabel->setText(QString::number(currentPlayer->Balance));
+    ui->statusLabel->setText(QString("%1's turn").arg(currentPlayer->getName()));
+}
+
+void MainWindow::nextPlayerTurn() {
+    if (players.isEmpty()) return;
+
+    currentPlayerIndex = (currentPlayerIndex + 1) % players.size();
+    currentPlayer = players[currentPlayerIndex];
+    updatePlayerUI();
+
+    ui->rollButton->setEnabled(true);
+}
+
+
 void MainWindow::handleLanding(int position){
-    qDebug() << "Landed on property index: " << player->getPosition();
+    if (!currentPlayer) return;
+
+    qDebug() << "Landed on property index: " << currentPlayer->getPosition();
     ui->KansAlg->setWordWrap(true);
     KansStapelp kans;
     AlgemeenFondsStapelp AlgFond;
-    if (position < player->getPrevPosition()){ //Ontvang startloon
+    if (position < currentPlayer->getPrevPosition()){ //Ontvang startloon
         ui->LoonLabel->setText("Je ontvangt 200 euro loon!");
-        player->voegGeldToe(200);
+        currentPlayer->voegGeldToe(200);
         QTimer::singleShot(3000, this, [this]() {
             ui->LoonLabel->clear();
         });
@@ -147,17 +190,17 @@ void MainWindow::handleLanding(int position){
             ui->KansAlg->clear();
         });
     }
-    if((player-> getPosition() == 30)){//Go To jail
-        player->inJail = true;
+    if((currentPlayer-> getPosition() == 30)){//Go To jail
+        currentPlayer->inJail = true;
         ui->KansAlg->setText("Go to Jail!");
 
         QTimer::singleShot(500, this, [this]() {
-            this->movePlayer(10);
+            this->movePlayer(10,currentPlayer);
             ui->KansAlg->clear();
         });
     }
-    if((player-> getPosition() == 38)){ //extra belasting
-        player->trekGeldAf(100);
+    if((currentPlayer-> getPosition() == 38)){ //extra belasting
+        currentPlayer->trekGeldAf(100);
         ui->KansAlg->setText("Je moet Extra Belasting betalen aan de gemeente.");
 
         // Clear the label after 2 seconds
@@ -165,15 +208,15 @@ void MainWindow::handleLanding(int position){
             ui->KansAlg->clear();
         });
     }
-    if((player-> getPosition() == 4)){ //Inkomsten Belasting
-        player->trekGeldAf(200);
+    if((currentPlayer-> getPosition() == 4)){ //Inkomsten Belasting
+        currentPlayer->trekGeldAf(200);
         ui->KansAlg->setText("Je Moet inkomsten belasting betalen aan de gemeente.");
 
         QTimer::singleShot(3000, this, [this]() {
             ui->KansAlg->clear();
         });
     }
-    ui->BalanceLabel->setText(QString::number(player->Balance));
+    ui->BalanceLabel->setText(QString::number(currentPlayer->Balance));
 }
 
 
@@ -181,8 +224,7 @@ void MainWindow::animatePlayerMovement(int steps){
     if(isMoving) return;
 
     isMoving = true;
-    int targetPosition = (player->getPosition() + steps) % 40;
-
+    int targetPosition = (currentPlayer->getPosition() + steps) % 40;
 
     // Animate each step
     for (int i = 1; i <= steps; i++) {
@@ -191,15 +233,15 @@ void MainWindow::animatePlayerMovement(int steps){
         timer->setInterval(i * 150);  // 150ms between steps
 
         connect(timer, &QTimer::timeout, [=]() {
-            int newPos = (player->getPosition() + 1) % 40;
-            movePlayer(newPos);
+            int newPos = (currentPlayer->getPosition() + 1) % 40;
+            movePlayer(newPos, currentPlayer);
 
             if (i == steps) {
                 isMoving = false;
                 handleLanding(newPos);
+                nextPlayerTurn();
             }
         });
-
         moveTimers.append(timer);
         timer->start();
     }
@@ -209,7 +251,7 @@ void MainWindow::animatePlayerMovement(int steps){
 MainWindow::~MainWindow()
 {
     qDeleteAll(moveTimers);
-    delete player;
+    qDeleteAll(players);
     delete board;
     delete ui;
 }

@@ -62,13 +62,13 @@ public:
             break;
         case 3:
             QTimer::singleShot(3000, window, [window, speler]() {
-                window->movePlayer(11);
+                window->movePlayer(11, speler);
                 window->handleLanding(speler->getPosition());
             });
 
             break;
         case 4:
-            window->movePlayer(39);
+            window->movePlayer(39, speler);
             break;
         case 5:
             speler->trekGeldAf(150);
@@ -84,7 +84,7 @@ public:
             break;
         case 9:
             QTimer::singleShot(1000, window, [window, speler]() {
-                window->movePlayer( ((speler->getPosition() + 37) % 40));
+                window->movePlayer( ((speler->getPosition() + 37) % 40), speler);
                 window->handleLanding(speler->getPosition());
             });
 
@@ -96,19 +96,19 @@ public:
             speler->trekGeldAf(speler->aantalHuizen * 40 + speler->aantalHotels * 115);
             break;
         case 12:
-            window->movePlayer(0);
+            window->movePlayer(0, speler);
             window->handleLanding(speler->getPosition());
             break;
         case 13:
             QTimer::singleShot(3000, window, [window, speler]() {
-                window->movePlayer(24);
+                window->movePlayer(24, speler);
                 window->handleLanding(speler->getPosition());
             });
 
             break;
         case 14:
             QTimer::singleShot(3000, window, [window, speler]() {
-                window->movePlayer(15);
+                window->movePlayer(15, speler);
                 window->handleLanding(speler->getPosition());
             });
             break;
@@ -189,7 +189,7 @@ public:
             break;
         }
         case 9:
-            window->movePlayer(0);
+            window->movePlayer(0, speler);
             speler->voegGeldToe(200);
             break;
         case 10:
@@ -199,7 +199,7 @@ public:
             speler->voegGeldToe(200);
             break;
         case 12:
-            window->movePlayer(1);
+            window->movePlayer(1, speler);
             window->handleLanding(speler->getPosition());
             break;
         case 13:

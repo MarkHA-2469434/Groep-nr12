@@ -6,9 +6,11 @@
 #include <QList>
 #include <QTimer>
 #include <QGraphicsPixmapItem>
+#include <QVector>
 
 #include "Board.h"
 #include "Player.h"
+#include "player_setup.h"
 
 class Board;
 class Player;
@@ -27,8 +29,10 @@ class MainWindow : public QMainWindow
 public:
     MainWindow(QWidget *parent = nullptr);
     ~MainWindow();
-    void movePlayer(int index);
+    void movePlayer(int index, Player* player);
     void handleLanding(int position);
+    void nextPlayerTurn();
+    void updatePlayerUI();
 
 private slots:
     void on_buyButton_clicked();
@@ -41,7 +45,10 @@ private:
     Player *player;
     Board *board;
     QList<QTimer*> moveTimers;
-    bool isMoving = false; // add this flag
+    bool isMoving = false;
+
+    Player *currentPlayer;
+    int currentPlayerIndex;
 
     static const int TILE_SIZE {80};
     static const int TILES_PER_SIDE {11};
@@ -52,5 +59,8 @@ private:
     void animatePlayerMovement(int steps);
 
     QGraphicsEllipseItem* playerToken = nullptr;
+
+    QVector<Player*> players;
+
 };
 #endif // MAINWINDOW_H

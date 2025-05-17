@@ -343,15 +343,9 @@
 	"HEADERS" : 
 	[
 		[
-			"C:/Users/markh/OneDrive/Documenten/MonopolyQt/Board.h",
+			"C:/Users/markh/OneDrive/Documenten/MonopolyQt/board.h",
 			"MU",
-			"EWIEGA46WW/moc_Board.cpp",
-			null
-		],
-		[
-			"C:/Users/markh/OneDrive/Documenten/MonopolyQt/Player.h",
-			"MU",
-			"EWIEGA46WW/moc_Player.cpp",
+			"EWIEGA46WW/moc_board.cpp",
 			null
 		],
 		[
@@ -364,6 +358,18 @@
 			"C:/Users/markh/OneDrive/Documenten/MonopolyQt/mainwindow.h",
 			"MU",
 			"EWIEGA46WW/moc_mainwindow.cpp",
+			null
+		],
+		[
+			"C:/Users/markh/OneDrive/Documenten/MonopolyQt/player.h",
+			"MU",
+			"EWIEGA46WW/moc_player.cpp",
+			null
+		],
+		[
+			"C:/Users/markh/OneDrive/Documenten/MonopolyQt/player_setup.h",
+			"MU",
+			"EWIEGA46WW/moc_player_setup.cpp",
 			null
 		],
 		[
@@ -459,6 +465,11 @@
 		],
 		[
 			"C:/Users/markh/OneDrive/Documenten/MonopolyQt/player.cpp",
+			"MU",
+			null
+		],
+		[
+			"C:/Users/markh/OneDrive/Documenten/MonopolyQt/player_setup.cpp",
 			"MU",
 			null
 		],

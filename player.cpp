@@ -15,15 +15,3 @@ void Player::moveTo(int index, const QPointF& pos) {
 QGraphicsItem* Player::getToken() const {
     return token;
 }
-
-void Player::setPosition(int position) {
-    this->position = position;
-}
-
-int Player::getPosition() const {
-    return position;
-}
-
-int Player::getPrevPosition() const {
-    return prevPosition;
-}

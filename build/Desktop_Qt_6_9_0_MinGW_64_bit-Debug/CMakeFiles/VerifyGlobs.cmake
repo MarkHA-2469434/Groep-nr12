@@ -42,16 +42,21 @@ endif()
 file(GLOB_RECURSE NEW_GLOB LIST_DIRECTORIES false "C:/Users/markh/OneDrive/Documenten/MonopolyQt/*.cpp")
 set(OLD_GLOB
   "C:/Users/markh/OneDrive/Documenten/MonopolyQt/Kans_AlgFonds.cpp"
+  "C:/Users/markh/OneDrive/Documenten/MonopolyQt/MonopolyMenu/logic.cpp"
+  "C:/Users/markh/OneDrive/Documenten/MonopolyQt/MonopolyMenu/main.cpp"
+  "C:/Users/markh/OneDrive/Documenten/MonopolyQt/MonopolyMenu/mainwindow.cpp"
   "C:/Users/markh/OneDrive/Documenten/MonopolyQt/board.cpp"
   "C:/Users/markh/OneDrive/Documenten/MonopolyQt/build/Desktop_Qt_6_9_0_MinGW_64_bit-Debug/CMakeFiles/3.30.5/CompilerIdCXX/CMakeCXXCompilerId.cpp"
   "C:/Users/markh/OneDrive/Documenten/MonopolyQt/build/Desktop_Qt_6_9_0_MinGW_64_bit-Debug/MonopolyQt_autogen/EWIEGA46WW/moc_Player.cpp"
   "C:/Users/markh/OneDrive/Documenten/MonopolyQt/build/Desktop_Qt_6_9_0_MinGW_64_bit-Debug/MonopolyQt_autogen/EWIEGA46WW/moc_game.cpp"
   "C:/Users/markh/OneDrive/Documenten/MonopolyQt/build/Desktop_Qt_6_9_0_MinGW_64_bit-Debug/MonopolyQt_autogen/EWIEGA46WW/moc_mainwindow.cpp"
+  "C:/Users/markh/OneDrive/Documenten/MonopolyQt/build/Desktop_Qt_6_9_0_MinGW_64_bit-Debug/MonopolyQt_autogen/EWIEGA46WW/moc_player_setup.cpp"
   "C:/Users/markh/OneDrive/Documenten/MonopolyQt/build/Desktop_Qt_6_9_0_MinGW_64_bit-Debug/MonopolyQt_autogen/mocs_compilation.cpp"
   "C:/Users/markh/OneDrive/Documenten/MonopolyQt/dice.cpp"
   "C:/Users/markh/OneDrive/Documenten/MonopolyQt/main.cpp"
   "C:/Users/markh/OneDrive/Documenten/MonopolyQt/mainwindow.cpp"
   "C:/Users/markh/OneDrive/Documenten/MonopolyQt/player.cpp"
+  "C:/Users/markh/OneDrive/Documenten/MonopolyQt/player_setup.cpp"
   "C:/Users/markh/OneDrive/Documenten/MonopolyQt/playermenu.cpp"
   "C:/Users/markh/OneDrive/Documenten/MonopolyQt/tile.cpp"
   )
@@ -72,12 +77,15 @@ endif()
 # _directory_contents at C:/Qt/6.9.0/mingw_64/lib/cmake/Qt6LinguistTools/Qt6LinguistToolsMacros.cmake:55 (file)
 file(GLOB_RECURSE NEW_GLOB LIST_DIRECTORIES false "C:/Users/markh/OneDrive/Documenten/MonopolyQt/*.h")
 set(OLD_GLOB
-  "C:/Users/markh/OneDrive/Documenten/MonopolyQt/Board.h"
-  "C:/Users/markh/OneDrive/Documenten/MonopolyQt/Player.h"
+  "C:/Users/markh/OneDrive/Documenten/MonopolyQt/MonopolyMenu/mainwindow.h"
+  "C:/Users/markh/OneDrive/Documenten/MonopolyQt/board.h"
   "C:/Users/markh/OneDrive/Documenten/MonopolyQt/build/Desktop_Qt_6_9_0_MinGW_64_bit-Debug/MonopolyQt_autogen/include/ui_mainwindow.h"
+  "C:/Users/markh/OneDrive/Documenten/MonopolyQt/build/Desktop_Qt_6_9_0_MinGW_64_bit-Debug/MonopolyQt_autogen/include/ui_player_setup.h"
   "C:/Users/markh/OneDrive/Documenten/MonopolyQt/build/Desktop_Qt_6_9_0_MinGW_64_bit-Debug/MonopolyQt_autogen/moc_predefs.h"
   "C:/Users/markh/OneDrive/Documenten/MonopolyQt/dice.h"
   "C:/Users/markh/OneDrive/Documenten/MonopolyQt/mainwindow.h"
+  "C:/Users/markh/OneDrive/Documenten/MonopolyQt/player.h"
+  "C:/Users/markh/OneDrive/Documenten/MonopolyQt/player_setup.h"
   "C:/Users/markh/OneDrive/Documenten/MonopolyQt/tile.h"
   )
 if(NOT "${NEW_GLOB}" STREQUAL "${OLD_GLOB}")
@@ -179,7 +187,9 @@ endif()
 # _directory_contents at C:/Qt/6.9.0/mingw_64/lib/cmake/Qt6LinguistTools/Qt6LinguistToolsMacros.cmake:55 (file)
 file(GLOB_RECURSE NEW_GLOB LIST_DIRECTORIES false "C:/Users/markh/OneDrive/Documenten/MonopolyQt/*.ui")
 set(OLD_GLOB
+  "C:/Users/markh/OneDrive/Documenten/MonopolyQt/MonopolyMenu/mainwindow.ui"
   "C:/Users/markh/OneDrive/Documenten/MonopolyQt/mainwindow.ui"
+  "C:/Users/markh/OneDrive/Documenten/MonopolyQt/player_setup.ui"
   )
 if(NOT "${NEW_GLOB}" STREQUAL "${OLD_GLOB}")
   message("-- GLOB mismatch!")
