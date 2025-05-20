@@ -3,7 +3,7 @@
 
 Player::Player(QGraphicsScene* scene, QColor color) : position(0), playerColor(color) {
     token = new QGraphicsEllipseItem(0, 0, 30, 30);
-    token->setBrush(Qt::cyan);
+    token->setBrush(playerColor);
     scene->addItem(token);
 }
 

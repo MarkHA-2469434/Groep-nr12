@@ -30,9 +30,9 @@
     <property name="geometry">
      <rect>
       <x>1100</x>
-      <y>390</y>
-      <width>141</width>
-      <height>18</height>
+      <y>380</y>
+      <width>101</width>
+      <height>20</height>
      </rect>
     </property>
     <property name="text">
@@ -66,9 +66,9 @@
     <property name="geometry">
      <rect>
       <x>950</x>
-      <y>450</y>
-      <width>131</width>
-      <height>16</height>
+      <y>480</y>
+      <width>341</width>
+      <height>31</height>
      </rect>
     </property>
     <property name="text">
@@ -79,9 +79,9 @@
     <property name="geometry">
      <rect>
       <x>950</x>
-      <y>390</y>
+      <y>380</y>
       <width>121</width>
-      <height>41</height>
+      <height>81</height>
      </rect>
     </property>
     <property name="styleSheet">
@@ -185,7 +185,7 @@
      <property name="geometry">
       <rect>
        <x>0</x>
-       <y>20</y>
+       <y>30</y>
        <width>191</width>
        <height>16</height>
       </rect>
@@ -197,8 +197,8 @@
     <widget class="QLabel" name="propertyPriceLabel">
      <property name="geometry">
       <rect>
-       <x>0</x>
-       <y>40</y>
+       <x>100</x>
+       <y>100</y>
        <width>221</width>
        <height>31</height>
       </rect>
@@ -207,6 +207,58 @@
       <string>Price: $0</string>
      </property>
     </widget>
+    <widget class="QLabel" name="propertyOwner">
+     <property name="geometry">
+      <rect>
+       <x>0</x>
+       <y>70</y>
+       <width>241</width>
+       <height>20</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string/>
+     </property>
+    </widget>
+    <widget class="QLabel" name="propertyOwnerLabel">
+     <property name="geometry">
+      <rect>
+       <x>110</x>
+       <y>70</y>
+       <width>271</width>
+       <height>20</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string/>
+     </property>
+    </widget>
+    <widget class="QLabel" name="propertyPrice">
+     <property name="geometry">
+      <rect>
+       <x>0</x>
+       <y>110</y>
+       <width>271</width>
+       <height>20</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string/>
+     </property>
+    </widget>
+   </widget>
+   <widget class="QPushButton" name="EndTurnButton">
+    <property name="geometry">
+     <rect>
+      <x>1102</x>
+      <y>410</y>
+      <width>101</width>
+      <height>51</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>End Turn</string>
+    </property>
    </widget>
   </widget>
  </widget>

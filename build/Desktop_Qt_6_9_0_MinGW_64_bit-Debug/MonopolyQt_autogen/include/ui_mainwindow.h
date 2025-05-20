@@ -38,6 +38,10 @@ public:
     QGroupBox *propertyGroup;
     QLabel *propertyNameLabel;
     QLabel *propertyPriceLabel;
+    QLabel *propertyOwner;
+    QLabel *propertyOwnerLabel;
+    QLabel *propertyPrice;
+    QPushButton *EndTurnButton;
 
     void setupUi(QMainWindow *MainWindow)
     {
@@ -55,7 +59,7 @@ public:
         centralwidget->setEnabled(true);
         buyButton = new QPushButton(centralwidget);
         buyButton->setObjectName("buyButton");
-        buyButton->setGeometry(QRect(1100, 390, 141, 18));
+        buyButton->setGeometry(QRect(1100, 380, 101, 20));
         diceLabel = new QLabel(centralwidget);
         diceLabel->setObjectName("diceLabel");
         diceLabel->setGeometry(QRect(950, 350, 361, 16));
@@ -64,10 +68,10 @@ public:
         boardView->setGeometry(QRect(0, 0, 880, 880));
         statusLabel = new QLabel(centralwidget);
         statusLabel->setObjectName("statusLabel");
-        statusLabel->setGeometry(QRect(950, 450, 131, 16));
+        statusLabel->setGeometry(QRect(950, 480, 341, 31));
         rollButton = new QPushButton(centralwidget);
         rollButton->setObjectName("rollButton");
-        rollButton->setGeometry(QRect(950, 390, 121, 41));
+        rollButton->setGeometry(QRect(950, 380, 121, 81));
         rollButton->setStyleSheet(QString::fromUtf8("QPushButton { background-color: #4CAF50; color: white; }"));
         playerGroup = new QGroupBox(centralwidget);
         playerGroup->setObjectName("playerGroup");
@@ -92,10 +96,22 @@ public:
         propertyGroup->setGeometry(QRect(940, 200, 371, 131));
         propertyNameLabel = new QLabel(propertyGroup);
         propertyNameLabel->setObjectName("propertyNameLabel");
-        propertyNameLabel->setGeometry(QRect(0, 20, 191, 16));
+        propertyNameLabel->setGeometry(QRect(0, 30, 191, 16));
         propertyPriceLabel = new QLabel(propertyGroup);
         propertyPriceLabel->setObjectName("propertyPriceLabel");
-        propertyPriceLabel->setGeometry(QRect(0, 40, 221, 31));
+        propertyPriceLabel->setGeometry(QRect(100, 100, 221, 31));
+        propertyOwner = new QLabel(propertyGroup);
+        propertyOwner->setObjectName("propertyOwner");
+        propertyOwner->setGeometry(QRect(0, 70, 241, 20));
+        propertyOwnerLabel = new QLabel(propertyGroup);
+        propertyOwnerLabel->setObjectName("propertyOwnerLabel");
+        propertyOwnerLabel->setGeometry(QRect(110, 70, 271, 20));
+        propertyPrice = new QLabel(propertyGroup);
+        propertyPrice->setObjectName("propertyPrice");
+        propertyPrice->setGeometry(QRect(0, 110, 271, 20));
+        EndTurnButton = new QPushButton(centralwidget);
+        EndTurnButton->setObjectName("EndTurnButton");
+        EndTurnButton->setGeometry(QRect(1102, 410, 101, 51));
         MainWindow->setCentralWidget(centralwidget);
 
         retranslateUi(MainWindow);
@@ -119,6 +135,10 @@ public:
         propertyGroup->setTitle(QCoreApplication::translate("MainWindow", "Property  info", nullptr));
         propertyNameLabel->setText(QCoreApplication::translate("MainWindow", "Select property", nullptr));
         propertyPriceLabel->setText(QCoreApplication::translate("MainWindow", "Price: $0", nullptr));
+        propertyOwner->setText(QString());
+        propertyOwnerLabel->setText(QString());
+        propertyPrice->setText(QString());
+        EndTurnButton->setText(QCoreApplication::translate("MainWindow", "End Turn", nullptr));
     } // retranslateUi
 
 };
