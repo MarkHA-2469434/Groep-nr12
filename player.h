@@ -2,6 +2,7 @@
 #define PLAYER_H
 #include <QGraphicsItem>
 #include <QGraphicsScene>
+#include "tile.h"
 
 class Player {
 public:
@@ -11,13 +12,25 @@ public:
     int aantalHuizen = 0;
     int aantalHotels = 0;
 
+    void sendToJail(int jailPosition, const QPointF& pos);
+    int jailTurns = 0;
+
+    QColor playerColor;
+    int position = 0;
+    int prevPosition = 0;
+
+    QString name;
+
+    int worp;
+    QVector<Tile> OwnedProperties;
+
     Player(QGraphicsScene* scene, QColor color);
     void moveTo(int index, const QPointF& pos);
     QGraphicsItem* getToken() const;
 
-    int getPosition() const { return position; };
+    int getPosition() const { return position; }
     int getPrevPosition()const{return prevPosition;}
-    void setPosition(int pos) {position = pos;};
+    void setPosition(int pos) {position = pos;}
 
     void voegGeldToe(int bedrag) {Balance += bedrag;}
     void trekGeldAf(int bedrag) {Balance -= bedrag;}
@@ -27,11 +40,6 @@ public:
 
 private:
     QGraphicsEllipseItem* token;
-    int position;
-    int prevPosition;
-    QColor playerColor;
-    QString name;
-
     int balance;
 };
 

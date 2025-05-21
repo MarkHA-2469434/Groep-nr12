@@ -129,7 +129,6 @@ C:/Users/markh/OneDrive/Documenten/MonopolyQt/build/Desktop_Qt_6_9_0_MinGW_64_bi
   C:/Qt/6.9.0/mingw_64/include/QtCore/qtversionchecks.h \
   C:/Qt/6.9.0/mingw_64/include/QtCore/qtypeinfo.h \
   C:/Qt/6.9.0/mingw_64/include/QtCore/qtypes.h \
-  C:/Qt/6.9.0/mingw_64/include/QtCore/qurl.h \
   C:/Qt/6.9.0/mingw_64/include/QtCore/qutf8stringview.h \
   C:/Qt/6.9.0/mingw_64/include/QtCore/qvariant.h \
   C:/Qt/6.9.0/mingw_64/include/QtCore/qvarlengtharray.h \
@@ -159,27 +158,18 @@ C:/Users/markh/OneDrive/Documenten/MonopolyQt/build/Desktop_Qt_6_9_0_MinGW_64_bi
   C:/Qt/6.9.0/mingw_64/include/QtGui/qregion.h \
   C:/Qt/6.9.0/mingw_64/include/QtGui/qrgb.h \
   C:/Qt/6.9.0/mingw_64/include/QtGui/qrgba64.h \
-  C:/Qt/6.9.0/mingw_64/include/QtGui/qtextcursor.h \
-  C:/Qt/6.9.0/mingw_64/include/QtGui/qtextdocument.h \
-  C:/Qt/6.9.0/mingw_64/include/QtGui/qtextformat.h \
-  C:/Qt/6.9.0/mingw_64/include/QtGui/qtextoption.h \
   C:/Qt/6.9.0/mingw_64/include/QtGui/qtgui-config.h \
   C:/Qt/6.9.0/mingw_64/include/QtGui/qtguiexports.h \
   C:/Qt/6.9.0/mingw_64/include/QtGui/qtguiglobal.h \
   C:/Qt/6.9.0/mingw_64/include/QtGui/qtransform.h \
   C:/Qt/6.9.0/mingw_64/include/QtGui/qwindowdefs.h \
   C:/Qt/6.9.0/mingw_64/include/QtGui/qwindowdefs_win.h \
-  C:/Qt/6.9.0/mingw_64/include/QtWidgets/QDialog \
   C:/Qt/6.9.0/mingw_64/include/QtWidgets/QGraphicsItem \
   C:/Qt/6.9.0/mingw_64/include/QtWidgets/QGraphicsPixmapItem \
   C:/Qt/6.9.0/mingw_64/include/QtWidgets/QGraphicsScene \
-  C:/Qt/6.9.0/mingw_64/include/QtWidgets/QLineEdit \
   C:/Qt/6.9.0/mingw_64/include/QtWidgets/QMainWindow \
-  C:/Qt/6.9.0/mingw_64/include/QtWidgets/qdialog.h \
-  C:/Qt/6.9.0/mingw_64/include/QtWidgets/qframe.h \
   C:/Qt/6.9.0/mingw_64/include/QtWidgets/qgraphicsitem.h \
   C:/Qt/6.9.0/mingw_64/include/QtWidgets/qgraphicsscene.h \
-  C:/Qt/6.9.0/mingw_64/include/QtWidgets/qlineedit.h \
   C:/Qt/6.9.0/mingw_64/include/QtWidgets/qmainwindow.h \
   C:/Qt/6.9.0/mingw_64/include/QtWidgets/qsizepolicy.h \
   C:/Qt/6.9.0/mingw_64/include/QtWidgets/qtabwidget.h \
@@ -401,5 +391,4 @@ C:/Users/markh/OneDrive/Documenten/MonopolyQt/build/Desktop_Qt_6_9_0_MinGW_64_bi
   C:/Users/markh/OneDrive/Documenten/MonopolyQt/Board.h \
   C:/Users/markh/OneDrive/Documenten/MonopolyQt/Player.h \
   C:/Users/markh/OneDrive/Documenten/MonopolyQt/Tile.h \
-  C:/Users/markh/OneDrive/Documenten/MonopolyQt/player.h \
-  C:/Users/markh/OneDrive/Documenten/MonopolyQt/player_setup.h
+  C:/Users/markh/OneDrive/Documenten/MonopolyQt/tile.h
