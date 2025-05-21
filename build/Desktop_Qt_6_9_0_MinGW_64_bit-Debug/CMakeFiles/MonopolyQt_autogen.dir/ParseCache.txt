@@ -780,10 +780,10 @@ C:/Users/markh/OneDrive/Documenten/MonopolyQt/mainwindow.h
  mdp:C:/Qt/Tools/mingw1310_64/x86_64-w64-mingw32/include/wchar.h
  mdp:C:/Users/markh/OneDrive/Documenten/MonopolyQt/board.h
  mdp:C:/Users/markh/OneDrive/Documenten/MonopolyQt/player.h
- mdp:C:/Users/markh/OneDrive/Documenten/MonopolyQt/Tile.h
+ mdp:C:/Users/markh/OneDrive/Documenten/MonopolyQt/tile.h
  mdp:C:/Users/markh/OneDrive/Documenten/MonopolyQt/build/Desktop_Qt_6_9_0_MinGW_64_bit-Debug/MonopolyQt_autogen/moc_predefs.h
  mdp:C:/Users/markh/OneDrive/Documenten/MonopolyQt/mainwindow.h
- mdp:C:/Users/markh/OneDrive/Documenten/MonopolyQt/Tile.h
+ mdp:C:/Users/markh/OneDrive/Documenten/MonopolyQt/tile.h
 C:/Users/markh/OneDrive/Documenten/MonopolyQt/player.h
 C:/Users/markh/OneDrive/Documenten/MonopolyQt/board.cpp
 C:/Users/markh/OneDrive/Documenten/MonopolyQt/dice.cpp
@@ -794,3 +794,4 @@ C:/Users/markh/OneDrive/Documenten/MonopolyQt/player.cpp
 C:/Users/markh/OneDrive/Documenten/MonopolyQt/player_setup.cpp
  uic:ui_player_setup.h
 C:/Users/markh/OneDrive/Documenten/MonopolyQt/tile.cpp
+C:/Users/markh/OneDrive/Documenten/MonopolyQt/tile.h

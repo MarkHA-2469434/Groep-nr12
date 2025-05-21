@@ -61,17 +61,14 @@ public:
             speler->voegGeldToe(100);
             break;
         case 3:
-            QTimer::singleShot(1500, window, [window, speler]() {
+            QTimer::singleShot(3000, window, [window, speler]() {
                 window->movePlayer(11, speler);
                 window->handleLanding(speler->getPosition());
             });
 
             break;
         case 4:
-            QTimer::singleShot(1500, window, [window, speler]() {
                 window->movePlayer(39, speler);
-                window->handleLanding(speler->getPosition());
-            });
             break;
         case 5:
             speler->trekGeldAf(150);
@@ -86,7 +83,7 @@ public:
             speler->voegGeldToe(150);
             break;
         case 9:
-            QTimer::singleShot(1500, window, [window, speler]() {
+            QTimer::singleShot(1000, window, [window, speler]() {
                 window->movePlayer( ((speler->getPosition() + 37) % 40), speler);
                 window->handleLanding(speler->getPosition());
             });
@@ -99,20 +96,18 @@ public:
             speler->trekGeldAf(speler->aantalHuizen * 40 + speler->aantalHotels * 115);
             break;
         case 12:
-            QTimer::singleShot(1500, window, [window, speler]() {
-                window->movePlayer(0, speler);
-                window->handleLanding(speler->getPosition());
-            });
+            window->movePlayer(0, speler);
+            window->handleLanding(speler->getPosition());
             break;
         case 13:
-            QTimer::singleShot(1500, window, [window, speler]() {
+            QTimer::singleShot(3000, window, [window, speler]() {
                 window->movePlayer(24, speler);
                 window->handleLanding(speler->getPosition());
             });
 
             break;
         case 14:
-            QTimer::singleShot(1500, window, [window, speler]() {
+            QTimer::singleShot(3000, window, [window, speler]() {
                 window->movePlayer(15, speler);
                 window->handleLanding(speler->getPosition());
             });
@@ -194,10 +189,8 @@ public:
             break;
         }
         case 9:
-            QTimer::singleShot(1500, window, [window, speler]() {
-                window->movePlayer(0, speler);
-                speler->voegGeldToe(200);
-            });
+            window->movePlayer(0, speler);
+            speler->voegGeldToe(200);
             break;
         case 10:
             speler->voegGeldToe(25);
@@ -206,10 +199,8 @@ public:
             speler->voegGeldToe(200);
             break;
         case 12:
-            QTimer::singleShot(1500, window, [window, speler]() {
-                window->movePlayer(1, speler);
-                window->payRent(speler->getPosition());
-            });
+            window->movePlayer(1, speler);
+            window->payRent(speler->getPosition());
             break;
         case 13:
             speler->voegGeldToe(50);

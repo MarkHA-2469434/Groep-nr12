@@ -377,11 +377,11 @@
 	"dependencies" : 
 	[
 		{
-			"backtrace" : 0,
-			"id" : "MonopolyQt_autogen::@6890427a1f51a3e7e1df"
+			"id" : "MonopolyQt_autogen_timestamp_deps::@6890427a1f51a3e7e1df"
 		},
 		{
-			"id" : "MonopolyQt_autogen_timestamp_deps::@6890427a1f51a3e7e1df"
+			"backtrace" : 0,
+			"id" : "MonopolyQt_autogen::@6890427a1f51a3e7e1df"
 		}
 	],
 	"id" : "MonopolyQt::@6890427a1f51a3e7e1df",
@@ -578,7 +578,7 @@
 		},
 		{
 			"backtrace" : 4,
-			"path" : "Tile.h",
+			"path" : "tile.h",
 			"sourceGroupIndex" : 1
 		},
 		{

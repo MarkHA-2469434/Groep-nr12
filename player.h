@@ -12,6 +12,9 @@ public:
     int aantalHuizen = 0;
     int aantalHotels = 0;
 
+    void sendToJail(int jailPosition, const QPointF& pos);
+    int jailTurns = 0;
+
     QColor playerColor;
     int position = 0;
     int prevPosition = 0;

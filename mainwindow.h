@@ -44,6 +44,8 @@ private slots:
     void on_rollButton_released();
     void on_EndTurnButton_released();
 
+    //void on_OwnerPropsButton_released();
+
 private:
     Ui::MainWindow* ui;
     QGraphicsScene* scene;
@@ -51,7 +53,9 @@ private:
     Player* player;
     Board* board;
     QList<QTimer*> moveTimers;
+
     bool isMoving = false;
+    bool hasRolled = false;
 
     Player* currentPlayer;
     int currentPlayerIndex;

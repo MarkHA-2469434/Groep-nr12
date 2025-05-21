@@ -27,7 +27,7 @@ MainWindow::MainWindow(QWidget *parent)
     ui->boardView->setFixedSize(BOARD_SIZE + 2, BOARD_SIZE + 2);
     ui->boardView->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
     ui->boardView->setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
-    ui->boardView->scale(0.70, 0.70);
+    //ui->boardView->scale(0.70, 0.70);
 
     board = new Board(scene);
     board->create();
@@ -113,23 +113,58 @@ void MainWindow::createProperty(int index, const QString& name, QColor color)
     qDebug() << "Tile" << index << "position:" << position;
 }
 
-
 void MainWindow::on_rollButton_released()
 {
     if (isMoving) return;
-    ui->rollButton->setEnabled(false);
+    hasRolled = true;
 
+    ui->rollButton->setEnabled(false);
     ui->diceLabel->setText("Rolling...");
-    QTimer::singleShot(800, [this] (){
-        auto [dice1,dice2] = Dice::roll();
+
+    QTimer::singleShot(800, [this]() {
+        auto [dice1, dice2] = Dice::roll();
         int total = dice1 + dice2;
-        currentPlayer->worp = total;
 
         ui->diceLabel->setText(QString("%1 + %2 = %3").arg(dice1).arg(dice2).arg(total));
-        animatePlayerMovement(total);
-        ui->EndTurnButton->setEnabled(true);
+
+        if (currentPlayer->inJail) {
+            if (dice1 == dice2) {
+                ui->KansAlg->setText("You rolled doubles! You're free.");
+                currentPlayer->inJail = false;
+                currentPlayer->jailTurns = 0;
+
+                QTimer::singleShot(2000, this, [this, total]() {
+                    ui->KansAlg->clear();
+                    animatePlayerMovement(total);
+                });
+            } else {
+                currentPlayer->jailTurns++;
+                ui->KansAlg->setText("Still in jail. Turn " + QString::number(currentPlayer->jailTurns));
+
+                if (currentPlayer->jailTurns >= 3) {
+                    ui->KansAlg->setText("You served 3 turns. You're free!");
+                    currentPlayer->inJail = false;
+                    currentPlayer->jailTurns = 0;
+
+                    QTimer::singleShot(2000, this, [this, total]() {
+                        ui->KansAlg->clear();
+                        animatePlayerMovement(total);
+                    });
+                } else {
+                    QTimer::singleShot(3000, this, [this]() {
+                        ui->KansAlg->clear();
+                        hasRolled = false;
+                        ui->rollButton->setEnabled(true);
+                        ui->EndTurnButton->setEnabled(true);
+                    });
+                }
+            }
+        } else {
+            animatePlayerMovement(total);
+        }
     });
 }
+
 
 void MainWindow::on_buyButton_clicked()
 {
@@ -195,9 +230,13 @@ void MainWindow::nextPlayerTurn() {
 
     currentPlayerIndex = (currentPlayerIndex + 1) % players.size();
     currentPlayer = players[currentPlayerIndex];
+
+    hasRolled = false;
     updatePlayerUI();
 
     ui->rollButton->setEnabled(true);
+    ui->EndTurnButton->setEnabled(false);
+    ui->diceLabel->clear();
 }
 
 int MainWindow::calcRent(int position) {
@@ -405,9 +444,7 @@ void MainWindow::handleLanding(int position) {
 
 void MainWindow::animatePlayerMovement(int steps){
     if(isMoving) return;
-
     isMoving = true;
-    int targetPosition = (currentPlayer->getPosition() + steps) % 40;
 
     // Animate each step
     for (int i = 1; i <= steps; i++) {
@@ -422,6 +459,8 @@ void MainWindow::animatePlayerMovement(int steps){
             if (i == steps) {
                 isMoving = false;
                 handleLanding(newPos);
+
+                ui->EndTurnButton->setEnabled(true);
             }
         });
         moveTimers.append(timer);
@@ -442,6 +481,7 @@ MainWindow::~MainWindow()
 
 void MainWindow::on_EndTurnButton_released()
 {
+    if (isMoving) return;
     ui->EndTurnButton->setEnabled(false);
     ui->buyButton->setEnabled(false);
     ui->propertyNameLabel->clear();

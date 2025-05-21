@@ -15,3 +15,10 @@ void Player::moveTo(int index, const QPointF& pos) {
 QGraphicsItem* Player::getToken() const {
     return token;
 }
+
+void Player::sendToJail(int jailPosition, const QPointF& pos) {
+    inJail = true;
+    jailTurns = 0;
+    setPosition(jailPosition);
+    moveTo(jailPosition, pos);
+}
