@@ -14,11 +14,11 @@ PlayerSetup::PlayerSetup(QWidget *parent) :
 {
     ui->setupUi(this);
 
-    // Connect spinbox to update name fields
+    isBotFlags.fill(false, 8);
+    ui->playerCountSpinBox->setRange(2, 8);
     connect(ui->playerCountSpinBox, QOverload<int>::of(&QSpinBox::valueChanged),this, &PlayerSetup::updateNameFields);
+    connect(ui->buttonBox, &QDialogButtonBox::accepted,this, &PlayerSetup::on_buttonBox_accepted);
 
-    // Initial setup
-    ui->playerCountSpinBox->setValue(2);
     updateNameFields(2);
 }
 
@@ -32,27 +32,63 @@ void PlayerSetup::updateNameFields(int count)
     // Clear existing fields
     qDeleteAll(nameFields);
     nameFields.clear();
+    qDeleteAll(botCheckboxes);
+    botCheckboxes.clear();
 
-    // Clear layout (except first two items - label and spinbox)
-    while (ui->formLayout->rowCount() > 0) {
-        ui->formLayout->removeRow(0);
+    // Clear layout (keep only the spinbox row)
+    while (ui->formLayout->rowCount() > 1) {
+        ui->formLayout->removeRow(1);
     }
 
-    // Add new fields
+    // Add new player input rows
     for (int i = 0; i < count; ++i) {
-        QLineEdit *lineEdit = new QLineEdit(this);
-        lineEdit->setPlaceholderText(QString("Player %1").arg(i+1));
-        ui->formLayout->addRow(QString("Player %1:").arg(i+1), lineEdit);
-        nameFields.append(lineEdit);
+        QHBoxLayout *hLayout = new QHBoxLayout();
+
+        QLineEdit *nameEdit = new QLineEdit(this);
+        nameEdit->setPlaceholderText(QString("Player %1").arg(i+1));
+
+        QCheckBox *botCheck = new QCheckBox("Bot", this);
+
+        hLayout->addWidget(nameEdit);
+        hLayout->addWidget(botCheck);
+
+        ui->formLayout->addRow(QString("Player %1:").arg(i+1), hLayout);
+
+        nameFields.append(nameEdit);
+        botCheckboxes.append(botCheck);
     }
+}
+
+void PlayerSetup::on_buttonBox_accepted()
+{
+    // Collect player names
+    playerNames.clear();
+    for (const QLineEdit *field : nameFields) {
+        QString name = field->text().trimmed();
+        playerNames.append(name.isEmpty() ? field->placeholderText() : name);
+    }
+
+    // Collect bot flags
+    isBotFlags.clear();
+    for (const QCheckBox *checkbox : botCheckboxes) {
+        isBotFlags.append(checkbox->isChecked());
+    }
+
+    accept();
 }
 
 QVector<QString> PlayerSetup::getPlayerNames() const
 {
-    QVector<QString> names;
-    for (const QLineEdit *field : nameFields) {
-        QString name = field->text().trimmed();
-        names.append(name.isEmpty() ? field->placeholderText() : name);
-    }
-    return names;
+    return playerNames;
 }
+
+QVector<bool> PlayerSetup::getIsBotFlags() const
+{
+    return isBotFlags;
+}
+
+int PlayerSetup::getPlayerCount() const
+{
+    return ui->playerCountSpinBox->value();
+}
+

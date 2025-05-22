@@ -11,10 +11,7 @@
 #include "Board.h"
 #include "Player.h"
 #include "player_setup.h"
-
-class Board;
-class Player;
-class Tile;
+#include "bot.h"
 
 QT_BEGIN_NAMESPACE
 namespace Ui {
@@ -24,19 +21,44 @@ QT_END_NAMESPACE
 
 class MainWindow : public QMainWindow
 {
-    Q_OBJECT
-
 public:
     MainWindow(QWidget *parent = nullptr);
     ~MainWindow();
+
+    void rollDice();
+    Board* getBoard() const { return board; }
+
     void movePlayer(int index, Player* player);
     void handleLanding(int position);
     void nextPlayerTurn();
     void updatePlayerUI();
 
+    void payRent(int position);
+    int calcRent(int position);
+
+    int calcStationRent(int position);
+    void payStationRent(int position);
+
+    int calcNutsbedrijvenRent(int worp, int position);
+    void PayNutsBedrijvenRent(int worp, int position);
+
+    bool isBot(Player* player) const;
+    void botTurn();
+
+    void highlightCurrentPlayer();
+    void purchaseCurrentProperty();
+
+    //jail members
+    void handleJailTurn();
+    void payJailFine();
+    void useJailCard();
+    void attemptJailEscape();
+
 private slots:
     void on_buyButton_clicked();
     void on_rollButton_released();
+    void on_EndTurnButton_released();
+
 
 private:
     Ui::MainWindow *ui;

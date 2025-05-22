@@ -39,7 +39,7 @@ public:
         PlayerSetup->resize(400, 300);
         verticalLayoutWidget = new QWidget(PlayerSetup);
         verticalLayoutWidget->setObjectName("verticalLayoutWidget");
-        verticalLayoutWidget->setGeometry(QRect(20, 30, 331, 141));
+        verticalLayoutWidget->setGeometry(QRect(20, 30, 331, 201));
         verticalLayout = new QVBoxLayout(verticalLayoutWidget);
         verticalLayout->setObjectName("verticalLayout");
         verticalLayout->setContentsMargins(0, 0, 0, 0);

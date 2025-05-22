@@ -349,6 +349,12 @@
 			null
 		],
 		[
+			"C:/Users/markh/OneDrive/Documenten/MonopolyQt/bot.h",
+			"MU",
+			"EWIEGA46WW/moc_bot.cpp",
+			null
+		],
+		[
 			"C:/Users/markh/OneDrive/Documenten/MonopolyQt/dice.h",
 			"MU",
 			"EWIEGA46WW/moc_dice.cpp",
@@ -456,6 +462,7 @@
 			null
 		],
 		[ "C:/Users/markh/OneDrive/Documenten/MonopolyQt/board.cpp", "MU", null ],
+		[ "C:/Users/markh/OneDrive/Documenten/MonopolyQt/bot.cpp", "MU", null ],
 		[ "C:/Users/markh/OneDrive/Documenten/MonopolyQt/dice.cpp", "MU", null ],
 		[ "C:/Users/markh/OneDrive/Documenten/MonopolyQt/main.cpp", "MU", null ],
 		[

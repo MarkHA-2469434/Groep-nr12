@@ -46,9 +46,8 @@ set(OLD_GLOB
   "C:/Users/markh/OneDrive/Documenten/MonopolyQt/MonopolyMenu/main.cpp"
   "C:/Users/markh/OneDrive/Documenten/MonopolyQt/MonopolyMenu/mainwindow.cpp"
   "C:/Users/markh/OneDrive/Documenten/MonopolyQt/board.cpp"
+  "C:/Users/markh/OneDrive/Documenten/MonopolyQt/bot.cpp"
   "C:/Users/markh/OneDrive/Documenten/MonopolyQt/build/Desktop_Qt_6_9_0_MinGW_64_bit-Debug/CMakeFiles/3.30.5/CompilerIdCXX/CMakeCXXCompilerId.cpp"
-  "C:/Users/markh/OneDrive/Documenten/MonopolyQt/build/Desktop_Qt_6_9_0_MinGW_64_bit-Debug/MonopolyQt_autogen/EWIEGA46WW/moc_Player.cpp"
-  "C:/Users/markh/OneDrive/Documenten/MonopolyQt/build/Desktop_Qt_6_9_0_MinGW_64_bit-Debug/MonopolyQt_autogen/EWIEGA46WW/moc_game.cpp"
   "C:/Users/markh/OneDrive/Documenten/MonopolyQt/build/Desktop_Qt_6_9_0_MinGW_64_bit-Debug/MonopolyQt_autogen/EWIEGA46WW/moc_mainwindow.cpp"
   "C:/Users/markh/OneDrive/Documenten/MonopolyQt/build/Desktop_Qt_6_9_0_MinGW_64_bit-Debug/MonopolyQt_autogen/EWIEGA46WW/moc_player_setup.cpp"
   "C:/Users/markh/OneDrive/Documenten/MonopolyQt/build/Desktop_Qt_6_9_0_MinGW_64_bit-Debug/MonopolyQt_autogen/mocs_compilation.cpp"
@@ -79,6 +78,7 @@ file(GLOB_RECURSE NEW_GLOB LIST_DIRECTORIES false "C:/Users/markh/OneDrive/Docum
 set(OLD_GLOB
   "C:/Users/markh/OneDrive/Documenten/MonopolyQt/MonopolyMenu/mainwindow.h"
   "C:/Users/markh/OneDrive/Documenten/MonopolyQt/board.h"
+  "C:/Users/markh/OneDrive/Documenten/MonopolyQt/bot.h"
   "C:/Users/markh/OneDrive/Documenten/MonopolyQt/build/Desktop_Qt_6_9_0_MinGW_64_bit-Debug/MonopolyQt_autogen/include/ui_mainwindow.h"
   "C:/Users/markh/OneDrive/Documenten/MonopolyQt/build/Desktop_Qt_6_9_0_MinGW_64_bit-Debug/MonopolyQt_autogen/include/ui_player_setup.h"
   "C:/Users/markh/OneDrive/Documenten/MonopolyQt/build/Desktop_Qt_6_9_0_MinGW_64_bit-Debug/MonopolyQt_autogen/moc_predefs.h"

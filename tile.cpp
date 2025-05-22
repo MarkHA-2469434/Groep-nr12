@@ -4,8 +4,10 @@
 #include <QGraphicsTextItem>
 #include <QBrush>
 
-Tile::Tile(int index, const QString& name, QColor color, QPointF position)
-    : index(index), name(name)
+Tile::Tile(int index, Player* Owner, int prijs, int hypo, int prijsPerHuis, int r1, int r2, int r3, int r4, int r5, int r6, const QString& name, QColor color, QPointF position)
+    : index(index), Owner(Owner), prijs(prijs), hypo(hypo), prijsPerHuis(prijsPerHuis),
+    r1(r1), r2(r2), r3(r3), r4(r4), r5(r5), r6(r6),
+    name(name), color(color), position(position)
 {
     graphicsItem  = new QGraphicsRectItem(0, 0, 80, 80);
     graphicsItem ->setPos(position);

@@ -19,6 +19,7 @@
 struct KansKaart {
     QString beschrijving;
     int Kaartnr;
+    bool isJailCard;
 };
 
 class KansStapelp {
@@ -121,6 +122,7 @@ public:
 struct FondsKaart {
     QString beschrijving;
     int Kaartnr;
+    bool isJailCard;
 };
 
 class AlgemeenFondsStapelp {
