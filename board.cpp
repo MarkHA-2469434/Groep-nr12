@@ -100,4 +100,3 @@ Tile* Board::getTile(int index) {
     }
     return nullptr;
 }
-

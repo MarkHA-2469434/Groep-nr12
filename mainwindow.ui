@@ -29,10 +29,17 @@
    <widget class="QPushButton" name="buyButton">
     <property name="geometry">
      <rect>
+<<<<<<< HEAD
       <x>1050</x>
       <y>350</y>
       <width>101</width>
       <height>31</height>
+=======
+      <x>1040</x>
+      <y>470</y>
+      <width>101</width>
+      <height>20</height>
+>>>>>>> 70850b30bb33f7ae62e41648c148dd27abe58b6a
      </rect>
     </property>
     <property name="palette">
@@ -512,8 +519,13 @@
     <property name="geometry">
      <rect>
       <x>910</x>
+<<<<<<< HEAD
       <y>330</y>
       <width>181</width>
+=======
+      <y>440</y>
+      <width>231</width>
+>>>>>>> 70850b30bb33f7ae62e41648c148dd27abe58b6a
       <height>16</height>
      </rect>
     </property>
@@ -535,9 +547,15 @@
     <property name="geometry">
      <rect>
       <x>910</x>
+<<<<<<< HEAD
       <y>450</y>
       <width>241</width>
       <height>16</height>
+=======
+      <y>560</y>
+      <width>231</width>
+      <height>31</height>
+>>>>>>> 70850b30bb33f7ae62e41648c148dd27abe58b6a
      </rect>
     </property>
     <property name="text">
@@ -548,9 +566,15 @@
     <property name="geometry">
      <rect>
       <x>910</x>
+<<<<<<< HEAD
       <y>350</y>
       <width>121</width>
       <height>91</height>
+=======
+      <y>470</y>
+      <width>121</width>
+      <height>81</height>
+>>>>>>> 70850b30bb33f7ae62e41648c148dd27abe58b6a
      </rect>
     </property>
     <property name="styleSheet">
@@ -563,10 +587,17 @@
    <widget class="QGroupBox" name="playerGroup">
     <property name="geometry">
      <rect>
+<<<<<<< HEAD
       <x>910</x>
       <y>10</y>
       <width>241</width>
       <height>141</height>
+=======
+      <x>890</x>
+      <y>10</y>
+      <width>191</width>
+      <height>161</height>
+>>>>>>> 70850b30bb33f7ae62e41648c148dd27abe58b6a
      </rect>
     </property>
     <property name="title">
@@ -616,7 +647,11 @@
       <rect>
        <x>70</x>
        <y>40</y>
+<<<<<<< HEAD
        <width>71</width>
+=======
+       <width>51</width>
+>>>>>>> 70850b30bb33f7ae62e41648c148dd27abe58b6a
        <height>16</height>
       </rect>
      </property>
@@ -641,10 +676,17 @@
    <widget class="QGroupBox" name="propertyGroup">
     <property name="geometry">
      <rect>
+<<<<<<< HEAD
       <x>910</x>
       <y>170</y>
       <width>241</width>
       <height>131</height>
+=======
+      <x>900</x>
+      <y>200</y>
+      <width>181</width>
+      <height>221</height>
+>>>>>>> 70850b30bb33f7ae62e41648c148dd27abe58b6a
      </rect>
     </property>
     <property name="title">
@@ -654,9 +696,15 @@
      <property name="geometry">
       <rect>
        <x>0</x>
+<<<<<<< HEAD
        <y>20</y>
        <width>241</width>
        <height>21</height>
+=======
+       <y>30</y>
+       <width>191</width>
+       <height>16</height>
+>>>>>>> 70850b30bb33f7ae62e41648c148dd27abe58b6a
       </rect>
      </property>
      <property name="text">
@@ -669,20 +717,30 @@
     <widget class="QLabel" name="propertyPriceLabel">
      <property name="geometry">
       <rect>
+<<<<<<< HEAD
        <x>120</x>
        <y>70</y>
+=======
+       <x>0</x>
+       <y>100</y>
+>>>>>>> 70850b30bb33f7ae62e41648c148dd27abe58b6a
        <width>221</width>
        <height>31</height>
       </rect>
      </property>
      <property name="text">
+<<<<<<< HEAD
       <string>Price: $</string>
+=======
+      <string>Price: </string>
+>>>>>>> 70850b30bb33f7ae62e41648c148dd27abe58b6a
      </property>
     </widget>
     <widget class="QLabel" name="propertyOwner">
      <property name="geometry">
       <rect>
        <x>0</x>
+<<<<<<< HEAD
        <y>106</y>
        <width>111</width>
        <height>20</height>
@@ -698,6 +756,10 @@
        <x>120</x>
        <y>100</y>
        <width>121</width>
+=======
+       <y>70</y>
+       <width>241</width>
+>>>>>>> 70850b30bb33f7ae62e41648c148dd27abe58b6a
        <height>20</height>
       </rect>
      </property>
@@ -709,8 +771,26 @@
      <property name="geometry">
       <rect>
        <x>0</x>
+<<<<<<< HEAD
        <y>76</y>
        <width>111</width>
+=======
+       <y>60</y>
+       <width>171</width>
+       <height>31</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string/>
+     </property>
+    </widget>
+    <widget class="QLabel" name="propertyPrice">
+     <property name="geometry">
+      <rect>
+       <x>0</x>
+       <y>130</y>
+       <width>171</width>
+>>>>>>> 70850b30bb33f7ae62e41648c148dd27abe58b6a
        <height>20</height>
       </rect>
      </property>
@@ -722,12 +802,18 @@
    <widget class="QPushButton" name="EndTurnButton">
     <property name="geometry">
      <rect>
+<<<<<<< HEAD
       <x>1050</x>
       <y>390</y>
+=======
+      <x>1040</x>
+      <y>500</y>
+>>>>>>> 70850b30bb33f7ae62e41648c148dd27abe58b6a
       <width>101</width>
       <height>51</height>
      </rect>
     </property>
+<<<<<<< HEAD
     <property name="palette">
      <palette>
       <active>
@@ -1197,6 +1283,8 @@
       </disabled>
      </palette>
     </property>
+=======
+>>>>>>> 70850b30bb33f7ae62e41648c148dd27abe58b6a
     <property name="text">
      <string>End Turn</string>
     </property>

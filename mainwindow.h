@@ -10,8 +10,15 @@
 
 #include "Board.h"
 #include "Player.h"
+<<<<<<< HEAD
 #include "player_setup.h"
 #include "bot.h"
+=======
+
+class Board;
+class Player;
+class Tile;
+>>>>>>> 70850b30bb33f7ae62e41648c148dd27abe58b6a
 
 QT_BEGIN_NAMESPACE
 namespace Ui {
@@ -22,7 +29,7 @@ QT_END_NAMESPACE
 class MainWindow : public QMainWindow
 {
 public:
-    MainWindow(QWidget *parent = nullptr);
+    MainWindow(QWidget* parent = nullptr);
     ~MainWindow();
 
     void rollDice();
@@ -32,6 +39,12 @@ public:
     void handleLanding(int position);
     void nextPlayerTurn();
     void updatePlayerUI();
+    void payRent(int position);
+    int calcRent(int position);
+    int calcStationRent(int position);
+    void payStationRent(int position);
+    int calcNutsbedrijvenRent(int worp,int position);
+    void PayNutsBedrijvenRent(int worp,int position);
 
     void payRent(int position);
     int calcRent(int position);
@@ -59,17 +72,23 @@ private slots:
     void on_rollButton_released();
     void on_EndTurnButton_released();
 
+<<<<<<< HEAD
+=======
+    //void on_OwnerPropsButton_released();
+>>>>>>> 70850b30bb33f7ae62e41648c148dd27abe58b6a
 
 private:
-    Ui::MainWindow *ui;
-    QGraphicsScene *scene;
+    Ui::MainWindow* ui;
+    QGraphicsScene* scene;
 
-    Player *player;
-    Board *board;
+    Player* player;
+    Board* board;
     QList<QTimer*> moveTimers;
-    bool isMoving = false;
 
-    Player *currentPlayer;
+    bool isMoving = false;
+    bool hasRolled = false;
+
+    Player* currentPlayer;
     int currentPlayerIndex;
 
     static const int TILE_SIZE {80};

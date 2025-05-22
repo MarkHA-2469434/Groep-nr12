@@ -69,7 +69,7 @@ public:
 
             break;
         case 4:
-            window->movePlayer(39, speler);
+                window->movePlayer(39, speler);
             break;
         case 5:
             speler->trekGeldAf(150);
@@ -202,7 +202,7 @@ public:
             break;
         case 12:
             window->movePlayer(1, speler);
-            window->handleLanding(speler->getPosition());
+            window->payRent(speler->getPosition());
             break;
         case 13:
             speler->voegGeldToe(50);
