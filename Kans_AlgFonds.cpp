@@ -24,7 +24,7 @@ KansStapelp::KansStapelp() {
         {"Ga verder naar Start.", 12, false},
         {"Ga naar Grote Markt, ontvang 200 euro indien voorbij Start.", 13, false},
         {"Ga naar Station Centraal, ontvang 200 euro indien voorbij Start.", 14, false},
-        {"Get Out of Jail Free", 15, true}  // Example jail card
+        {"Get Out of Jail Free", 15, true}  // jail card
     };
     std::srand(static_cast<unsigned int>(std::time(nullptr)));
 }
@@ -120,7 +120,7 @@ AlgemeenFondsStapelp::AlgemeenFondsStapelp() {
         {"Ga terug naar Diestsestraat.", 12, false},
         {"Door verkoop van effecten ontvangt u 50 euro.", 13, false},
         {"Betaal uw doktersrekening: 50 euro.", 14, false},
-        {"Get Out of Jail Free", 15, true}  // Example jail card
+        {"Get Out of Jail Free", 15, true}  // jail card
     };
 }
 
@@ -169,8 +169,10 @@ FondsKaart AlgemeenFondsStapelp::trekAlgKaart(Player* speler, MainWindow* window
         break;
     }
     case 9:
-        window->movePlayer(0, speler);
-        speler->voegGeldToe(200);
+        QTimer::singleShot(1000, window, [window, speler]() {
+            window->movePlayer(0, speler);
+            window->handleLanding(speler->getPosition());
+        });
         break;
     case 10:
         speler->voegGeldToe(25);
@@ -179,8 +181,10 @@ FondsKaart AlgemeenFondsStapelp::trekAlgKaart(Player* speler, MainWindow* window
         speler->voegGeldToe(200);
         break;
     case 12:
-        window->movePlayer(1, speler);
-        window->payRent(speler->getPosition());
+        QTimer::singleShot(1000, window, [window, speler]() {
+            window->movePlayer(1, speler);
+            window->payRent(speler->getPosition());
+        });
         break;
     case 13:
         speler->voegGeldToe(50);

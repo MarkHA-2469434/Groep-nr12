@@ -13,14 +13,14 @@ public:
     QPointF calculateTilePosition(int index) const;
     Tile* getTile(int index);
 
+    QVector<Tile*> tiles;
+
     QVector<Tile*>& getTiles() { return tiles; }
     const QVector<Tile*>& getTiles() const { return tiles; }
 
-
 private:
     QGraphicsScene* scene;
-    QVector<Tile*> tiles;
 };
 
 
-#endif // BOARD_H
+#endif

@@ -536,7 +536,7 @@
      <rect>
       <x>910</x>
       <y>450</y>
-      <width>241</width>
+      <width>311</width>
       <height>16</height>
      </rect>
     </property>
@@ -643,7 +643,7 @@
      <rect>
       <x>910</x>
       <y>170</y>
-      <width>241</width>
+      <width>181</width>
       <height>131</height>
      </rect>
     </property>
@@ -655,7 +655,7 @@
       <rect>
        <x>0</x>
        <y>20</y>
-       <width>241</width>
+       <width>121</width>
        <height>21</height>
       </rect>
      </property>
@@ -669,21 +669,21 @@
     <widget class="QLabel" name="propertyPriceLabel">
      <property name="geometry">
       <rect>
-       <x>120</x>
-       <y>70</y>
+       <x>40</x>
+       <y>50</y>
        <width>221</width>
        <height>31</height>
       </rect>
      </property>
      <property name="text">
-      <string>Price:</string>
+      <string/>
      </property>
     </widget>
     <widget class="QLabel" name="propertyOwner">
      <property name="geometry">
       <rect>
        <x>0</x>
-       <y>106</y>
+       <y>80</y>
        <width>111</width>
        <height>20</height>
       </rect>
@@ -695,8 +695,8 @@
     <widget class="QLabel" name="propertyPrice">
      <property name="geometry">
       <rect>
-       <x>120</x>
-       <y>100</y>
+       <x>0</x>
+       <y>60</y>
        <width>121</width>
        <height>20</height>
       </rect>
@@ -709,7 +709,7 @@
      <property name="geometry">
       <rect>
        <x>0</x>
-       <y>76</y>
+       <y>100</y>
        <width>111</width>
        <height>31</height>
       </rect>
@@ -718,17 +718,30 @@
       <string/>
      </property>
     </widget>
-    <widget class="QLabel" name="propertyPrice">
+    <widget class="QLabel" name="GehypothykeerdLabel">
      <property name="geometry">
       <rect>
-       <x>0</x>
-       <y>130</y>
-       <width>171</width>
-       <height>20</height>
+       <x>10</x>
+       <y>40</y>
+       <width>49</width>
+       <height>16</height>
       </rect>
      </property>
      <property name="text">
-      <string/>
+      <string>TextLabel</string>
+     </property>
+    </widget>
+    <widget class="QLabel" name="HypoJaNeeLabel">
+     <property name="geometry">
+      <rect>
+       <x>60</x>
+       <y>40</y>
+       <width>49</width>
+       <height>16</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>TextLabel</string>
      </property>
     </widget>
    </widget>
@@ -1212,6 +1225,32 @@
     </property>
     <property name="text">
      <string>End Turn</string>
+    </property>
+   </widget>
+   <widget class="QPushButton" name="OwnerPropsButton">
+    <property name="geometry">
+     <rect>
+      <x>1050</x>
+      <y>470</y>
+      <width>80</width>
+      <height>71</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>Properties</string>
+    </property>
+   </widget>
+   <widget class="QPushButton" name="tradeButton">
+    <property name="geometry">
+     <rect>
+      <x>950</x>
+      <y>470</y>
+      <width>80</width>
+      <height>71</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>Trade</string>
     </property>
    </widget>
   </widget>

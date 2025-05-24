@@ -52,11 +52,8 @@ public:
     void addProperty(Tile* property) { ownedProperties.append(property); }
     bool ownsProperty(Tile* property) const { return ownedProperties.contains(property); }
 
-private:
     QGraphicsEllipseItem* token;
     QVector<Tile*> ownedProperties;
-
-    int balance;
 };
 
 

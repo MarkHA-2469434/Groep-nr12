@@ -4,8 +4,8 @@
 #include <QString>
 #include <QVector>
 
-class Player;  // Forward declaration
-class MainWindow;  // Forward declaration
+class Player;
+class MainWindow;
 
 struct KansKaart {
     QString beschrijving;
