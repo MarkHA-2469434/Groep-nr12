@@ -6,19 +6,13 @@
 #include <QRandomGenerator>
 #include <QTimer>
 #include <QTextBlock>
-<<<<<<< HEAD
 #include <QMessageBox>
-=======
-#include "dice.h"
-#include "Kans_AlgFonds.cpp"
-#include "player_setup.h"
->>>>>>> 70850b30bb33f7ae62e41648c148dd27abe58b6a
 
 #include "dice.h"
 #include "player_setup.h"
-#include "Kans_AlgFonds.cpp"
 #include "bot.h"
 #include "board.h"
+#include "Kans_AlgFonds.h"
 
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
@@ -93,20 +87,21 @@ MainWindow::MainWindow(QWidget *parent)
             qDebug() << "Moving player" << i << "to start position";
             movePlayer(0, player);
         }
-<<<<<<< HEAD
-        currentPlayer = players.first();
-=======
 
-        currentPlayer = players[0];
->>>>>>> 70850b30bb33f7ae62e41648c148dd27abe58b6a
-        currentPlayerIndex = 0;
-        updatePlayerUI();
+        if (!players.isEmpty()) {
+            currentPlayer = players.first();
+            currentPlayerIndex = 0;
+
+            qDebug() << "Current player set to:" << currentPlayer->getName() << "Is bot:" << isBot(currentPlayer) << "Pointer:" << currentPlayer;
+        }
 
         if (isBot(currentPlayer)) {
             botTurn();
         } else {
             ui->rollButton->setEnabled(true);
         }
+        updatePlayerUI();
+
     }
 }
 
@@ -154,7 +149,6 @@ void MainWindow::createProperty(int index, const QString& name, QColor color)
 
 void MainWindow::on_rollButton_released()
 {
-<<<<<<< HEAD
     qDebug() << "Roll button pressed";
 
     if (isMoving){
@@ -164,10 +158,6 @@ void MainWindow::on_rollButton_released()
 
     ui->rollButton->setEnabled(false);
     ui->EndTurnButton->setEnabled(false);
-=======
-    if (isMoving) return;
-    hasRolled = true;
->>>>>>> 70850b30bb33f7ae62e41648c148dd27abe58b6a
 
     ui->rollButton->setEnabled(false);
     ui->diceLabel->setText("Rolling...");
@@ -178,9 +168,7 @@ void MainWindow::on_rollButton_released()
         currentPlayer->worp = total;
 
         ui->diceLabel->setText(QString("%1 + %2 = %3").arg(dice1).arg(dice2).arg(total));
-<<<<<<< HEAD
         animatePlayerMovement(total);
-=======
 
         if (currentPlayer->inJail) {
             if (dice1 == dice2) {
@@ -217,7 +205,6 @@ void MainWindow::on_rollButton_released()
         } else {
             animatePlayerMovement(total);
         }
->>>>>>> 70850b30bb33f7ae62e41648c148dd27abe58b6a
     });
 }
 
@@ -225,23 +212,15 @@ void MainWindow::on_rollButton_released()
 void MainWindow::on_buyButton_clicked()
 {
     int position = currentPlayer->getPosition();
-<<<<<<< HEAD
     Tile* tile = board->getTiles()[position];
-
-    if (tile->Owner || tile->prijs == 0) {
-        ui->statusLabel->setText("Cannot buy this property");
-=======
-    Tile* tile = board->tiles[position];
 
     if (tile->prijs == 0 || tile->Owner != nullptr) {
         qDebug() << "owner: "<< tile->Owner << "geld: " << currentPlayer->Balance << "position: "<< currentPlayer->position << "tileprice: " << tile->prijs;
         ui->statusLabel->setText("This property cannot be purchased.");
->>>>>>> 70850b30bb33f7ae62e41648c148dd27abe58b6a
         return;
     }
 
     if (currentPlayer->Balance >= tile->prijs) {
-<<<<<<< HEAD
         currentPlayer->trekGeldAf(tile->prijs);
         tile->Owner = currentPlayer;
         currentPlayer->addProperty(tile);
@@ -254,60 +233,12 @@ void MainWindow::on_buyButton_clicked()
     ui->BalanceLabel->setText(QString::number(currentPlayer->Balance));
 }
 
-void MainWindow::movePlayer(int index, Player* player) {
-    qDebug() << "movePlayer called with index:" << index << "player:" << player;
-
-    if (!player) {
-        qCritical() << "movePlayer: null player!";
-        return;
-    }
-    if (!board) {
-        qCritical() << "movePlayer: board not initialized!";
-        return;
-    }
-    if (!scene) {
-        qCritical() << "movePlayer: scene not initialized!";
-        return;
-    }
-
-    index = index % 40;
-    qDebug() << "Moving to wrapped index:" << index;
-=======
-        // Deduct money from player
-        currentPlayer->trekGeldAf(tile->prijs);
-
-        // Set ownership
-        tile->Owner = currentPlayer;
-
-        // Update UI
-        ui->statusLabel->setText(QString("%1 bought %2 for $%3")
-                                     .arg(currentPlayer->getName())
-                                     .arg(tile->name)
-                                     .arg(tile->prijs));
-
-        ui->propertyOwnerLabel->setText(currentPlayer->getName());
-        ui->propertyPrice->setText("Rent: $");
-        if (position == 5 || position == 15 || position == 25 || position == 35){
-            ui->propertyPriceLabel->setText(QString::number(calcStationRent(position)));
-        }
-        else{
-            ui->propertyPriceLabel->setText(QString::number(calcRent(position)));
-        }
-        ui->propertyOwner->setText("Owner:");
-
-        // Update balance label
-        ui->BalanceLabel->setText(QString::number(currentPlayer->Balance));
-    } else {
-        ui->statusLabel->setText("Not enough money to buy this property.");
-    }
-}
-
 
 void MainWindow::movePlayer(int index, Player* player){
-    if (!player) player = currentPlayer;
-    if (!player) return;
->>>>>>> 70850b30bb33f7ae62e41648c148dd27abe58b6a
-
+    if (!player || !board || !scene) {
+        qCritical() << "Invalid movePlayer parameters!";
+        return;
+    }
     player->setPosition(index);
     qDebug() << "Player position set to:" << index;
 
@@ -323,8 +254,10 @@ void MainWindow::movePlayer(int index, Player* player){
 }
 
 void MainWindow::updatePlayerUI() {
-    if (!currentPlayer) return;
-
+    if (!currentPlayer) {
+        qCritical() << "updatePlayerUI: currentPlayer is null!";
+        return;
+    }
     ui->playerNameLabel->setText(currentPlayer->getName());
     ui->BalanceLabel->setText(QString::number(currentPlayer->Balance));
     ui->statusLabel->setText(QString("%1's turn").arg(currentPlayer->getName()));
@@ -361,7 +294,7 @@ void MainWindow::nextPlayerTurn() {
 
     currentPlayerIndex = (currentPlayerIndex + 1) % players.size();
     currentPlayer = players[currentPlayerIndex];
-<<<<<<< HEAD
+
     qDebug() << "New current player:" << currentPlayer->getName() << (isBot(currentPlayer) ? "(Bot)" : "(Human)");
 
     highlightCurrentPlayer();
@@ -383,18 +316,17 @@ void MainWindow::nextPlayerTurn() {
         ui->rollButton->setEnabled(true);
         ui->EndTurnButton->setEnabled(false);
         ui->statusLabel->setText(QString("%1's turn - Roll the dice!").arg(currentPlayer->getName()));
-=======
 
-    hasRolled = false;
     updatePlayerUI();
 
     ui->rollButton->setEnabled(true);
     ui->EndTurnButton->setEnabled(false);
     ui->diceLabel->clear();
 }
+}
 
 int MainWindow::calcRent(int position) {
-    Tile* tile = board->tiles[position];
+    Tile* tile = board->getTiles()[position];
     int rent = 0;
 
     switch(tile->huizencount) {
@@ -421,29 +353,25 @@ int MainWindow::calcRent(int position) {
     return rent;
 }
 void MainWindow::payRent(int position) {
-    Tile* tile = board->tiles[position];
+    Tile* tile = board->getTiles()[position];
     if ((tile->Owner != currentPlayer) && (tile->Owner != nullptr)){
         int rent = calcRent(position);
         currentPlayer->trekGeldAf(rent);
         tile->Owner->voegGeldToe(rent);
-        ui->statusLabel->setText(QString("%1 betaalde %2 huur aan %3 op %4")
-                                     .arg(currentPlayer->getName())
-                                     .arg(rent)
-                                     .arg(tile->Owner->getName())
-                                     .arg(tile->name));
+        ui->statusLabel->setText(QString("%1 betaalde %2 huur aan %3 op %4").arg(currentPlayer->getName()).arg(rent).arg(tile->Owner->getName()).arg(tile->name));
     }
 }
 int MainWindow::calcStationRent(int position){
-    Tile* tile = board->tiles[position];
+    Tile* tile = board->getTiles()[position];
     Player* Eigenaar = tile->Owner;
     int stationcount = 0;
     int stationrent = 0;
 
     //Tel het aantal stations dat de persoon heeft
-    if(board->tiles[5]->Owner == Eigenaar){ stationcount += 1;}
-    if(board->tiles[15]->Owner == Eigenaar){ stationcount += 1;}
-    if(board->tiles[25]->Owner == Eigenaar){ stationcount += 1;}
-    if(board->tiles[35]->Owner == Eigenaar){ stationcount += 1;}
+    if(board->getTiles()[5]->Owner == Eigenaar){ stationcount += 1;}
+    if(board->getTiles()[15]->Owner == Eigenaar){ stationcount += 1;}
+    if(board->getTiles()[25]->Owner == Eigenaar){ stationcount += 1;}
+    if(board->getTiles()[35]->Owner == Eigenaar){ stationcount += 1;}
     switch(stationcount){
     case 1:
         stationrent = tile->r1;
@@ -461,22 +389,18 @@ int MainWindow::calcStationRent(int position){
     return stationrent;
 }
 void MainWindow::payStationRent(int position){
-    Tile* tile = board->tiles[position];
+    Tile* tile = board->getTiles()[position];
     Player* Eigenaar = tile->Owner;
     if ((Eigenaar == nullptr) or (Eigenaar == currentPlayer)){ return; }
     currentPlayer->trekGeldAf(calcStationRent(position));
     Eigenaar->voegGeldToe(calcStationRent(position));
-    ui->statusLabel->setText(QString("%1 betaalde %2 huur aan %3 op %4")
-                                 .arg(currentPlayer->getName())
-                                 .arg(calcStationRent(position))
-                                 .arg(tile->Owner->getName())
-                                 .arg(tile->name));
+    ui->statusLabel->setText(QString("%1 betaalde %2 huur aan %3 op %4").arg(currentPlayer->getName()).arg(calcStationRent(position)).arg(tile->Owner->getName()).arg(tile->name));
 }
 
 int MainWindow::calcNutsbedrijvenRent(int worp,int position){
-    Tile* tile = board->tiles[position];
+    Tile* tile = board->getTiles()[position];
     int rent = 0;
-    if (tile->Owner == board->tiles[12]->Owner && tile->Owner == board->tiles[28]->Owner){
+    if (tile->Owner == board->getTiles()[12]->Owner && tile->Owner == board->getTiles()[28]->Owner){
         rent = worp * 10;
     }
     else{
@@ -486,16 +410,11 @@ int MainWindow::calcNutsbedrijvenRent(int worp,int position){
 }
 
 void MainWindow::PayNutsBedrijvenRent(int worp,int position){
-    Tile* tile = board->tiles[position];
+    Tile* tile = board->getTiles()[position];
     if (tile->Owner != currentPlayer && tile->Owner != nullptr){
         currentPlayer->trekGeldAf(calcNutsbedrijvenRent(worp,position));
         tile->Owner->voegGeldToe(calcNutsbedrijvenRent(worp,position));
-        ui->statusLabel->setText(QString("%1 betaalde %2 huur aan %3 op %4")
-                                     .arg(currentPlayer->getName())
-                                     .arg(calcNutsbedrijvenRent(worp,position))
-                                     .arg(tile->Owner->getName())
-                                     .arg(tile->name));
->>>>>>> 70850b30bb33f7ae62e41648c148dd27abe58b6a
+        ui->statusLabel->setText(QString("%1 betaalde %2 huur aan %3 op %4").arg(currentPlayer->getName()).arg(calcNutsbedrijvenRent(worp,position)).arg(tile->Owner->getName()).arg(tile->name));
     }
 }
 
@@ -669,47 +588,18 @@ void MainWindow::purchaseCurrentProperty() {
     on_buyButton_clicked();
 }
 
-<<<<<<< HEAD
-void MainWindow::handleLanding(int position){
-    if (!currentPlayer) return;
 
-    Tile* currentTile = board->getTile(position);
-
-    ui->propertyNameLabel->setText(currentTile->name);
-
-    if (currentTile->Owner) {
-        ui->propertyOwnerLabel->setText(currentTile->Owner->getName());
-        //ui->propertyPriceLabel->setText(QString("Rent: €%1").arg(calcRent(position)));
-        ui->buyButton->setEnabled(false);
-    } else if (currentTile->prijs > 0) {
-        ui->propertyOwnerLabel->setText("Available");
-        ui->propertyPriceLabel->setText(QString("Price: €%1").arg(currentTile->prijs));
-        ui->buyButton->setEnabled(!isBot(currentPlayer));
-    } else {
-        ui->propertyOwnerLabel->clear();
-        ui->propertyPriceLabel->setText(currentTile->name);
-        ui->buyButton->setEnabled(false);
-    }
-
-    qDebug() << "Landed on property index: " << currentPlayer->getPosition();
-
-    ui->KansAlg->setWordWrap(true);
-    KansStapelp kans;
-    AlgemeenFondsStapelp AlgFond;
-
-    if (position < currentPlayer->getPrevPosition()){ //ontvang startloon
-=======
 void MainWindow::handleLanding(int position) {
     qDebug() << "Landed on property index: " << currentPlayer->getPosition();
-    Tile* tile = board->tiles[position];
+    Tile* tile = board->getTiles()[position];
 
-    // === Display Property Info ===
+    //Display Property Info
     ui->propertyNameLabel->setText(tile->name);
 
-    // === Reactivate buyproperty ===
+    //Reactivate buyproperty
     ui->buyButton->setEnabled(true);
 
-    // === Special Tiles Logic ===
+    // Special Tiles Logic
     ui->KansAlg->setWordWrap(true);
 
     if (tile->prijs == 0) {
@@ -735,14 +625,12 @@ void MainWindow::handleLanding(int position) {
 
     // Start salary if passed "Start"
     if (position < currentPlayer->getPrevPosition()) {
->>>>>>> 70850b30bb33f7ae62e41648c148dd27abe58b6a
         ui->LoonLabel->setText("Je ontvangt 200 euro loon!");
         currentPlayer->voegGeldToe(200);
         QTimer::singleShot(3000, this, [this]() {
             ui->LoonLabel->clear();
         });
     }
-<<<<<<< HEAD
 
     if( (position == 7) || (position== 22 ) || (position == 36) ){//kans kaart
         KansKaart kaart = kans.trekKansKaart(currentPlayer, this);
@@ -756,8 +644,8 @@ void MainWindow::handleLanding(int position) {
             ui->KansAlg->clear();
         });
     }
-    if( (position == 2) || (position== 17) || (position== 33) ){//Algemeen Fonds
-        FondsKaart kaart = AlgFond.trekAlgKaart(currentPlayer, this);
+    else if( (position == 2) || (position== 17) || (position== 33) ){//Algemeen Fonds
+        FondsKaart kaart = algFond.trekAlgKaart(currentPlayer, this);
         ui->KansAlg->setText(kaart.beschrijving);
 
         if (kaart.isJailCard) {
@@ -768,34 +656,7 @@ void MainWindow::handleLanding(int position) {
             ui->KansAlg->clear();
         });
     }
-    if(position == 30){//Go To jail
-=======
-    //Train Stations
-    if((position == 5) || (position == 15) || (position == 25) || (position == 35)){
-        payStationRent(currentPlayer->getPosition());
-    }
-    else if (position == 12 || position == 28){
-        PayNutsBedrijvenRent(currentPlayer->worp,position);
-    }
-    // Kans
-    else if (position == 7 || position == 22 || position == 36) {
-        KansStapelp kans;
-        KansKaart kaart = kans.trekKansKaart(currentPlayer, this);
-        ui->KansAlg->setText(kaart.beschrijving);
-        QTimer::singleShot(5000, this, [this]() { ui->KansAlg->clear(); });
-    }
-
-    // Algemeen Fonds
-    else if (position == 2 || position == 17 || position == 33) {
-        AlgemeenFondsStapelp AlgFond;
-        FondsKaart kaart = AlgFond.trekAlgKaart(currentPlayer, this);
-        ui->KansAlg->setText(kaart.beschrijving);
-        QTimer::singleShot(5000, this, [this]() { ui->KansAlg->clear(); });
-    }
-
-    // Go to jail
-    else if (position == 30) {
->>>>>>> 70850b30bb33f7ae62e41648c148dd27abe58b6a
+    else if (position == 30) { // Go to jail
         currentPlayer->inJail = true;
         currentPlayer->turnsInJail = 0;
         ui->KansAlg->setText("Go to Jail!");
@@ -806,38 +667,33 @@ void MainWindow::handleLanding(int position) {
         });
         return;
     }
-<<<<<<< HEAD
-    if(position == 38){ //extra belasting
+    else if (position == 38) { // Extra belasting
         currentPlayer->trekGeldAf(100);
         ui->KansAlg->setText("Je moet Extra Belasting betalen aan de gemeente.");
-
         QTimer::singleShot(5000, this, [this]() {
             ui->KansAlg->clear();
         });
     }
-
-    if(position == 4){ //Inkomsten Belasting
-=======
-
-    // Extra belasting
-    else if (position == 38) {
-        currentPlayer->trekGeldAf(100);
-        ui->KansAlg->setText("Je moet Extra Belasting betalen aan de gemeente.");
-        QTimer::singleShot(5000, this, [this]() { ui->KansAlg->clear(); });
-    }
-
-    // Inkomsten belasting
-    else if (position == 4) {
->>>>>>> 70850b30bb33f7ae62e41648c148dd27abe58b6a
+    else if (position == 4) { // Inkomsten Belasting
         currentPlayer->trekGeldAf(200);
         ui->KansAlg->setText("Je Moet inkomsten belasting betalen aan de gemeente.");
-        QTimer::singleShot(3000, this, [this]() { ui->KansAlg->clear(); });
-    }
-    else {
-        payRent(currentPlayer->getPosition());
+        QTimer::singleShot(3000, this, [this]() {
+            ui->KansAlg->clear();
+        });
     }
 
-    // Update player balance
+    // Handle property payments
+    if (position == 5 || position == 15 || position == 25 || position == 35) {
+        payStationRent(position);
+    }
+    else if (position == 12 || position == 28) {
+        PayNutsBedrijvenRent(currentPlayer->worp, position);
+    }
+    else if (tile->Owner && tile->Owner != currentPlayer) {
+        payRent(position);
+    }
+
+    // Update UI
     currentPlayer->prevPosition = currentPlayer->getPosition();
     ui->BalanceLabel->setText(QString::number(currentPlayer->Balance));
 
@@ -849,26 +705,24 @@ void MainWindow::handleLanding(int position) {
         ui->EndTurnButton->setEnabled(true);
     }
 
-    if (isBot(currentPlayer)){
+    if (isBot(currentPlayer)) {
         Tile* tile = board->getTiles()[position];
-        if (tile->Owner == nullptr && tile->prijs > 0 && currentPlayer->Balance >= tile->prijs) {
+        if (!tile->Owner && tile->prijs > 0 && currentPlayer->Balance >= tile->prijs) {
             on_buyButton_clicked();
         }
     }
 }
 
-void MainWindow::animatePlayerMovement(int steps){
-<<<<<<< HEAD
-    if(isMoving){
+void MainWindow::animatePlayerMovement(int steps) {
+    if (isMoving) {
+        qDebug() << "Movement already in progress";
         return;
     }
-=======
-    if(isMoving) return;
->>>>>>> 70850b30bb33f7ae62e41648c148dd27abe58b6a
-    isMoving = true;
 
+    isMoving = true;
     int startPos = currentPlayer->getPosition();
 
+    // Clear any existing timers
     qDeleteAll(moveTimers);
     moveTimers.clear();
 
@@ -881,35 +735,41 @@ void MainWindow::animatePlayerMovement(int steps){
 
             int newPos = (startPos + i) % 40;
             movePlayer(newPos, currentPlayer);
-            qDebug() << "Moved to position" << newPos;
+            qDebug() << currentPlayer->getName() << "moved to position" << newPos;
 
+            // Handle final position
             if (i == steps) {
                 isMoving = false;
+                currentPlayer->setPosition(newPos);
                 qDebug() << "Movement complete at position" << newPos;
-                handleLanding(newPos);
-<<<<<<< HEAD
-                ui->EndTurnButton->setEnabled(true);
 
-=======
+                QTimer::singleShot(300, [this, newPos]() {
+                    handleLanding(newPos);
 
-                ui->EndTurnButton->setEnabled(true);
->>>>>>> 70850b30bb33f7ae62e41648c148dd27abe58b6a
+                    if (!isBot(currentPlayer)) {
+                        ui->EndTurnButton->setEnabled(!currentPlayer->inJail);
+                    }
+                });
             }
         });
 
         timer->setSingleShot(true);
-        timer->start(i * 200);
+        timer->start(i * 200); // 200ms inbetween steps
     }
 }
 
 void MainWindow::on_EndTurnButton_released()
 {
+    if (isMoving) return;
+
     ui->EndTurnButton->setEnabled(false);
     ui->rollButton->setEnabled(false);
     ui->buyButton->setEnabled(false);
 
     ui->propertyNameLabel->clear();
     ui->propertyPriceLabel->clear();
+    ui->propertyOwnerLabel->clear();
+    ui->KansAlg->clear();
 
     QTimer::singleShot(500, this, &MainWindow::nextPlayerTurn);
 }
@@ -926,23 +786,3 @@ MainWindow::~MainWindow()
     delete board;
     delete ui;
 }
-<<<<<<< HEAD
-=======
-
-
-void MainWindow::on_EndTurnButton_released()
-{
-    if (isMoving) return;
-    ui->EndTurnButton->setEnabled(false);
-    ui->buyButton->setEnabled(false);
-    ui->propertyNameLabel->clear();
-    ui->propertyPrice->clear();
-    ui->propertyPriceLabel->clear();
-    ui->propertyOwner->clear();
-    ui->propertyOwnerLabel->clear();
-    ui->KansAlg->clear();
-    nextPlayerTurn();
-    ui->rollButton->setEnabled(true);
-
-}
->>>>>>> 70850b30bb33f7ae62e41648c148dd27abe58b6a
