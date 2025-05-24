@@ -8,4 +8,4 @@ public:
     static std::tuple<int, int> roll();
 };
 
-#endif // DICE_H
+#endif

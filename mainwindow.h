@@ -3,6 +3,7 @@
 
 #include <QMainWindow>
 #include <QGraphicsScene>
+#include <QVBoxLayout>
 #include <QList>
 #include <QTimer>
 #include <QGraphicsPixmapItem>
@@ -30,7 +31,6 @@ public:
     MainWindow(QWidget* parent = nullptr);
     ~MainWindow();
 
-    void rollDice();
     Board* getBoard() const { return board; }
 
     void movePlayer(int index, Player* player);
@@ -47,8 +47,13 @@ public:
     int calcNutsbedrijvenRent(int worp, int position);
     void PayNutsBedrijvenRent(int worp, int position);
 
+    bool checkMonopoly(const QString colorgroup);
+    void updateTileHouses(int position);
+    void updateTileOwnerLabel(Tile* tile);
+
     bool isBot(Player* player) const;
     void botTurn();
+    void rollDice();
 
     void highlightCurrentPlayer();
     void purchaseCurrentProperty();
@@ -64,7 +69,8 @@ private slots:
     void on_rollButton_released();
     void on_EndTurnButton_released();
 
-    //void on_OwnerPropsButton_released();
+    void on_OwnerPropsButton_released();
+    void on_tradeButton_released();
 
 private:
     Ui::MainWindow* ui;
@@ -96,4 +102,4 @@ private:
     QVector<Player*> players;
 
 };
-#endif // MAINWINDOW_H
+#endif

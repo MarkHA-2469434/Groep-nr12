@@ -37,4 +37,4 @@ private:
 
 };
 
-#endif // PLAYERSETUP_H
+#endif

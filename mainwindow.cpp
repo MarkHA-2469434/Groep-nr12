@@ -1,5 +1,6 @@
 #include "mainwindow.h"
 #include "./ui_mainwindow.h"
+
 #include <QGraphicsRectItem>
 #include <QGraphicsItem>
 #include <QPushButton>
@@ -7,6 +8,9 @@
 #include <QTimer>
 #include <QTextBlock>
 #include <QMessageBox>
+#include <QComboBox>
+#include <QSpinBox>
+#include <QListWidget>
 
 #include "dice.h"
 #include "player_setup.h"
@@ -37,15 +41,14 @@ MainWindow::MainWindow(QWidget *parent)
     ui->boardView->setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
     //ui->boardView->scale(0.70, 0.70);
 
-    connect(ui->EndTurnButton, &QPushButton::clicked, this, &MainWindow::on_EndTurnButton_released);
-    connect(ui->rollButton, &QPushButton::released, this, &MainWindow::on_rollButton_released);
-    qDebug() << "Roll button connection established";
-
-    qDebug() << "Creating Board";
     board = new Board(scene);
-    qDebug() << "Board created at" << board;
     board->create();
-    qDebug() << "Board creation successful";
+
+    connect(ui->rollButton, &QPushButton::released, this, &MainWindow::on_rollButton_released);
+    connect(ui->EndTurnButton, &QPushButton::released, this, &MainWindow::on_EndTurnButton_released);
+    connect(ui->buyButton, &QPushButton::clicked, this, &MainWindow::on_buyButton_clicked);
+    connect(ui->OwnerPropsButton, &QPushButton::released, this, &MainWindow::on_OwnerPropsButton_released);
+    connect(ui->tradeButton, &QPushButton::clicked, this, &MainWindow::on_tradeButton_released);
 
     // Add center image/logo
     //QGraphicsPixmapItem *logo = new QGraphicsPixmapItem(QPixmap(":/images/monopoly.png"));
@@ -168,7 +171,6 @@ void MainWindow::on_rollButton_released()
         currentPlayer->worp = total;
 
         ui->diceLabel->setText(QString("%1 + %2 = %3").arg(dice1).arg(dice2).arg(total));
-        animatePlayerMovement(total);
 
         if (currentPlayer->inJail) {
             if (dice1 == dice2) {
@@ -212,45 +214,56 @@ void MainWindow::on_rollButton_released()
 void MainWindow::on_buyButton_clicked()
 {
     int position = currentPlayer->getPosition();
-    Tile* tile = board->getTiles()[position];
+    Tile* tile = board->tiles[position];
 
     if (tile->prijs == 0 || tile->Owner != nullptr) {
-        qDebug() << "owner: "<< tile->Owner << "geld: " << currentPlayer->Balance << "position: "<< currentPlayer->position << "tileprice: " << tile->prijs;
         ui->statusLabel->setText("This property cannot be purchased.");
         return;
     }
 
     if (currentPlayer->Balance >= tile->prijs) {
+        // Deduct money from player
         currentPlayer->trekGeldAf(tile->prijs);
+        // Set ownership
         tile->Owner = currentPlayer;
-        currentPlayer->addProperty(tile);
+        updateTileOwnerLabel(tile);
 
-        ui->statusLabel->setText(QString("%1 bought %2").arg(currentPlayer->getName()).arg(tile->name));
-        ui->buyButton->setEnabled(false);
+        currentPlayer->ownedProperties.append(tile);
+
+        // Update UI
+        ui->statusLabel->setText(QString("%1 bought %2 for $%3")
+                                     .arg(currentPlayer->getName())
+                                     .arg(tile->name)
+                                     .arg(tile->prijs));
+
+        ui->propertyOwnerLabel->setText(currentPlayer->getName());
+        ui->propertyPrice->setText("Rent: $");
+        if (position == 5 || position == 15 || position == 25 || position == 35){
+            ui->propertyPriceLabel->setText(QString::number(calcStationRent(position)));}
+        else if (position == 12 || position == 28){
+            ui->propertyPriceLabel->setText(QString::number(calcNutsbedrijvenRent(currentPlayer->worp,position)));}
+
+        else{
+            ui->propertyPriceLabel->setText(QString::number(calcRent(position)));}
+        ui->propertyOwner->setText("Owner:");
+
+        // Update balance label
+        ui->BalanceLabel->setText(QString::number(currentPlayer->Balance));
     } else {
-        ui->statusLabel->setText("Not enough money!");
+        ui->statusLabel->setText("Not enough money to buy this property.");
     }
-    ui->BalanceLabel->setText(QString::number(currentPlayer->Balance));
 }
 
 
 void MainWindow::movePlayer(int index, Player* player){
-    if (!player || !board || !scene) {
-        qCritical() << "Invalid movePlayer parameters!";
-        return;
-    }
     player->setPosition(index);
-    qDebug() << "Player position set to:" << index;
-
     QPointF tilePos = board->calculateTilePosition(index);
-    qDebug() << "Tile position calculated:" << tilePos;
 
-    if (auto token = dynamic_cast<QGraphicsEllipseItem*>(player->getToken())) {
-        token->setPos(tilePos.x() + 25, tilePos.y() + 25);
-        qDebug() << player->getName() << "moved to" << index << "at" << tilePos;
-    } else {
-        qWarning() << "Invalid player token!";
-    }
+    qDebug() << "Token position is being set";
+    auto token = dynamic_cast<QGraphicsEllipseItem*>(player->getToken());
+    token->setPos(tilePos.x() + 25, tilePos.y() + 25);
+    qDebug() << player->getName() << "moved to" << index << "at" << tilePos;
+
 }
 
 void MainWindow::updatePlayerUI() {
@@ -297,12 +310,8 @@ void MainWindow::nextPlayerTurn() {
 
     qDebug() << "New current player:" << currentPlayer->getName() << (isBot(currentPlayer) ? "(Bot)" : "(Human)");
 
-    highlightCurrentPlayer();
+    //highlightCurrentPlayer();
     updatePlayerUI();
-    if (!currentPlayer) {
-        qCritical() << "Invalid current player!";
-        currentPlayer = players.first();
-    }
 
     if (currentPlayer->inJail) {
         handleJailTurn();
@@ -317,12 +326,12 @@ void MainWindow::nextPlayerTurn() {
         ui->EndTurnButton->setEnabled(false);
         ui->statusLabel->setText(QString("%1's turn - Roll the dice!").arg(currentPlayer->getName()));
 
-    updatePlayerUI();
+        updatePlayerUI();
 
-    ui->rollButton->setEnabled(true);
-    ui->EndTurnButton->setEnabled(false);
-    ui->diceLabel->clear();
-}
+        ui->rollButton->setEnabled(true);
+        ui->EndTurnButton->setEnabled(false);
+        ui->diceLabel->clear();
+    }
 }
 
 int MainWindow::calcRent(int position) {
@@ -361,6 +370,7 @@ void MainWindow::payRent(int position) {
         ui->statusLabel->setText(QString("%1 betaalde %2 huur aan %3 op %4").arg(currentPlayer->getName()).arg(rent).arg(tile->Owner->getName()).arg(tile->name));
     }
 }
+
 int MainWindow::calcStationRent(int position){
     Tile* tile = board->getTiles()[position];
     Player* Eigenaar = tile->Owner;
@@ -418,7 +428,7 @@ void MainWindow::PayNutsBedrijvenRent(int worp,int position){
     }
 }
 
-void MainWindow::highlightCurrentPlayer() {
+/*void MainWindow::highlightCurrentPlayer() {
     if (!currentPlayer) return;
 
     for (Player* p : players) {
@@ -441,6 +451,7 @@ void MainWindow::highlightCurrentPlayer() {
 
     scene->update();
 }
+*/
 
 void MainWindow::botTurn() {
     qDebug() << "Starting bot turn for" << currentPlayer->getName();
@@ -588,7 +599,6 @@ void MainWindow::purchaseCurrentProperty() {
     on_buyButton_clicked();
 }
 
-
 void MainWindow::handleLanding(int position) {
     qDebug() << "Landed on property index: " << currentPlayer->getPosition();
     Tile* tile = board->getTiles()[position];
@@ -598,6 +608,7 @@ void MainWindow::handleLanding(int position) {
 
     //Reactivate buyproperty
     ui->buyButton->setEnabled(true);
+    ui->OwnerPropsButton->setEnabled(true);
 
     // Special Tiles Logic
     ui->KansAlg->setWordWrap(true);
@@ -607,21 +618,29 @@ void MainWindow::handleLanding(int position) {
         ui->propertyPriceLabel->clear();
         ui->propertyOwner->clear();
         ui->propertyOwnerLabel->clear();
-    } else if (tile->Owner == nullptr) {
+    }
+    else if (tile->Owner == nullptr) {
         ui->propertyPrice->setText("Price: $");
         ui->propertyPriceLabel->setText(QString::number(tile->prijs));
         ui->propertyOwner->clear();
         ui->propertyOwnerLabel->clear();
-    } else {
+    }
+    else {
         ui->propertyPrice->setText("Rent: $");
         if (position == 5 || position == 15 || position == 25 || position == 35){
-            ui->propertyPriceLabel->setText(QString::number(calcStationRent(position)));}
-        else{
+            ui->propertyPriceLabel->setText(QString::number(calcStationRent(position)));
+        }
+        else if (position == 12 || position == 28){
+            ui->propertyPriceLabel->setText(QString::number(calcNutsbedrijvenRent(currentPlayer->worp,position)));
+        }
+        else
+        {
             ui->propertyPriceLabel->setText(QString::number(calcRent(position)));}
-        ui->propertyOwner->setText("Owner:");
-        ui->propertyOwnerLabel->setText(tile->Owner->name);
+            ui->propertyOwner->setText("Owner:");
+            ui->propertyOwnerLabel->setText(tile->Owner->name);
+            ui->GehypothykeerdLabel->setText("Gehypothykeerd:");
+            ui->HypoJaNeeLabel->setText(tile->gehypotykeert ? "Ja" : "Nee");
     }
-
 
     // Start salary if passed "Start"
     if (position < currentPlayer->getPrevPosition()) {
@@ -632,30 +651,37 @@ void MainWindow::handleLanding(int position) {
         });
     }
 
-    if( (position == 7) || (position== 22 ) || (position == 36) ){//kans kaart
+    //Train Stations
+    if(((position == 5) || (position == 15) || (position == 25) || (position == 35)) && tile->gehypotykeert == false){
+        payStationRent(currentPlayer->getPosition());
+    }
+    else if ((position == 12 || position == 28) && tile->gehypotykeert == false){
+        PayNutsBedrijvenRent(currentPlayer->worp,position);
+    }
+
+    // Kans
+    else if (position == 7 || position == 22 || position == 36) {
+        KansStapelp kans;
         KansKaart kaart = kans.trekKansKaart(currentPlayer, this);
         ui->KansAlg->setText(kaart.beschrijving);
-
         if (kaart.isJailCard) {
             currentPlayer->jailCards++;
         }
-
-        QTimer::singleShot(5000, this, [this]() {
-            ui->KansAlg->clear();
-        });
+        QTimer::singleShot(5000, this, [this]() { ui->KansAlg->clear(); });
     }
-    else if( (position == 2) || (position== 17) || (position== 33) ){//Algemeen Fonds
-        FondsKaart kaart = algFond.trekAlgKaart(currentPlayer, this);
+
+    // Algemeen Fonds
+    else if (position == 2 || position == 17 || position == 33) {
+        AlgemeenFondsStapelp AlgFond;
+        FondsKaart kaart = AlgFond.trekAlgKaart(currentPlayer, this);
         ui->KansAlg->setText(kaart.beschrijving);
-
         if (kaart.isJailCard) {
             currentPlayer->jailCards++;
         }
-
-        QTimer::singleShot(5000, this, [this]() {
-            ui->KansAlg->clear();
-        });
+        QTimer::singleShot(5000, this, [this]() { ui->KansAlg->clear(); });
     }
+
+    // Go to jail
     else if (position == 30) { // Go to jail
         currentPlayer->inJail = true;
         currentPlayer->turnsInJail = 0;
@@ -665,37 +691,26 @@ void MainWindow::handleLanding(int position) {
             ui->KansAlg->clear();
             handleJailTurn();
         });
-        return;
     }
-    else if (position == 38) { // Extra belasting
+
+    // Extra belasting
+    else if (position == 38) {
         currentPlayer->trekGeldAf(100);
         ui->KansAlg->setText("Je moet Extra Belasting betalen aan de gemeente.");
-        QTimer::singleShot(5000, this, [this]() {
-            ui->KansAlg->clear();
-        });
+        QTimer::singleShot(5000, this, [this]() { ui->KansAlg->clear(); });
     }
-    else if (position == 4) { // Inkomsten Belasting
+
+    // Inkomsten belasting
+    else if (position == 4) {
         currentPlayer->trekGeldAf(200);
         ui->KansAlg->setText("Je Moet inkomsten belasting betalen aan de gemeente.");
-        QTimer::singleShot(3000, this, [this]() {
-            ui->KansAlg->clear();
-        });
+        QTimer::singleShot(3000, this, [this]() { ui->KansAlg->clear(); });
     }
-
-    // Handle property payments
-    if (position == 5 || position == 15 || position == 25 || position == 35) {
-        payStationRent(position);
+    else {
+        if (tile->gehypotykeert == false){
+            payRent(currentPlayer->getPosition());
+        }
     }
-    else if (position == 12 || position == 28) {
-        PayNutsBedrijvenRent(currentPlayer->worp, position);
-    }
-    else if (tile->Owner && tile->Owner != currentPlayer) {
-        payRent(position);
-    }
-
-    // Update UI
-    currentPlayer->prevPosition = currentPlayer->getPosition();
-    ui->BalanceLabel->setText(QString::number(currentPlayer->Balance));
 
     if (currentPlayer->inJail) {
         handleJailTurn();
@@ -709,8 +724,12 @@ void MainWindow::handleLanding(int position) {
         Tile* tile = board->getTiles()[position];
         if (!tile->Owner && tile->prijs > 0 && currentPlayer->Balance >= tile->prijs) {
             on_buyButton_clicked();
-        }
     }
+}
+
+    currentPlayer->prevPosition = currentPlayer->getPosition();
+    ui->BalanceLabel->setText(QString::number(currentPlayer->Balance));
+    ui->EndTurnButton->setEnabled(true);
 }
 
 void MainWindow::animatePlayerMovement(int steps) {
@@ -743,7 +762,7 @@ void MainWindow::animatePlayerMovement(int steps) {
                 currentPlayer->setPosition(newPos);
                 qDebug() << "Movement complete at position" << newPos;
 
-                QTimer::singleShot(300, [this, newPos]() {
+                QTimer::singleShot(100, [this, newPos]() {
                     handleLanding(newPos);
 
                     if (!isBot(currentPlayer)) {
@@ -760,18 +779,20 @@ void MainWindow::animatePlayerMovement(int steps) {
 
 void MainWindow::on_EndTurnButton_released()
 {
-    if (isMoving) return;
-
     ui->EndTurnButton->setEnabled(false);
-    ui->rollButton->setEnabled(false);
     ui->buyButton->setEnabled(false);
+    ui->OwnerPropsButton->setEnabled(false);
 
+    ui->LoonLabel->clear();
     ui->propertyNameLabel->clear();
+    ui->propertyPrice->clear();
     ui->propertyPriceLabel->clear();
+    ui->propertyOwner->clear();
     ui->propertyOwnerLabel->clear();
+    ui->GehypothykeerdLabel->clear();
+    ui->HypoJaNeeLabel->clear();
     ui->KansAlg->clear();
-
-    QTimer::singleShot(500, this, &MainWindow::nextPlayerTurn);
+    nextPlayerTurn();
 }
 
 bool MainWindow::isBot(Player* player) const {
@@ -785,4 +806,494 @@ MainWindow::~MainWindow()
     qDeleteAll(players);
     delete board;
     delete ui;
+}
+
+void MainWindow::on_OwnerPropsButton_released() {
+    if (!currentPlayer) return;
+
+    QDialog* propDialog = new QDialog(this);
+    propDialog->setWindowTitle(currentPlayer->getName() + "'s Properties");
+
+    QVBoxLayout* mainLayout = new QVBoxLayout(propDialog);
+
+    // Scroll area setup
+    QScrollArea* scrollArea = new QScrollArea();
+    scrollArea->setWidgetResizable(true);
+    QWidget* scrollWidget = new QWidget();
+    QVBoxLayout* scrollLayout = new QVBoxLayout(scrollWidget);
+
+    for (Tile* tile : currentPlayer->ownedProperties) {
+        QGroupBox* group = new QGroupBox(tile->name);
+        QVBoxLayout* groupLayout = new QVBoxLayout(group);
+        QLabel* kleurLabel = new QLabel();
+        kleurLabel->setFixedSize(40, 20); // Klein gekleurd vlakje
+        kleurLabel->setStyleSheet(QString("background-color: rgb(%1, %2, %3); border: 1px solid black;")
+                                      .arg(tile->color.red())
+                                      .arg(tile->color.green())
+                                      .arg(tile->color.blue()));
+        groupLayout->addWidget(kleurLabel);
+
+        QLabel* label = nullptr;
+        bool isStation = tile->name.contains("Station", Qt::CaseInsensitive);
+        bool isUtility = tile->name.contains("Water", Qt::CaseInsensitive) || tile->name.contains("Elektriciteit", Qt::CaseInsensitive);
+
+        QString info;
+        if (isStation) {
+            info = QString(
+                       "Hypotheek: €%1\n"
+                       "Huur:\n"
+                       " - 1 station: €25\n"
+                       " - 2 stations: €50\n"
+                       " - 3 stations: €100\n"
+                       " - 4 stations: €200\n"
+                       "Gehypothekeerd: %2")
+                       .arg(tile->hypo)
+                       .arg(tile->gehypotykeert ? "Ja" : "Nee");
+        } else if (isUtility) {
+            info = QString(
+                       "Hypotheek: €%1\n"
+                       "Huur:\n"
+                       " - 1 nutsbedrijf: 4× dobbelstenen\n"
+                       " - 2 nutsbedrijven: 10× dobbelstenen\n"
+                       "Gehypothekeerd: %2")
+                       .arg(tile->hypo)
+                       .arg(tile->gehypotykeert ? "Ja" : "Nee");
+        } else {
+            info = QString(
+                       "Hypotheek: €%1\n"
+                       "Prijs per huis: €%2\n"
+                       "Huur:\n"
+                       " - Onbebouwd: €%3\n"
+                       " - 1 huis: €%4\n"
+                       " - 2 huizen: €%5\n"
+                       " - 3 huizen: €%6\n"
+                       " - 4 huizen: €%7\n"
+                       " - Hotel: €%8\n"
+                       "Gehypothekeerd: %9")
+                       .arg(tile->hypo)
+                       .arg(tile->prijsPerHuis)
+                       .arg(tile->r1)
+                       .arg(tile->r2)
+                       .arg(tile->r3)
+                       .arg(tile->r4)
+                       .arg(tile->r5)
+                       .arg(tile->r6)
+                       .arg(tile->gehypotykeert ? "Ja" : "Nee");
+        }
+
+        label = new QLabel(info);
+        groupLayout->addWidget(label);
+
+        // For street properties, add buy/sell house buttons
+        if (!isStation && !isUtility) {
+            QPushButton* buyHouseButton = new QPushButton("Koop Huis");
+            QPushButton* sellHouseButton = new QPushButton("Verkoop Huis");
+
+            buyHouseButton->setEnabled(false);
+            sellHouseButton->setEnabled(tile->huizencount > 0);
+
+            groupLayout->addWidget(buyHouseButton);
+            groupLayout->addWidget(sellHouseButton);
+
+            // Enable buy button if monopoly is owned
+            if (checkMonopoly(tile->colorgroup)) {
+                buyHouseButton->setEnabled(true);
+            }
+
+            connect(buyHouseButton, &QPushButton::clicked, [=]() {
+                int housePrice = tile->prijsPerHuis;
+
+                if (tile->huizencount >= 5) {
+                    ui->statusLabel->setText("Maximaal aantal huizen bereikt op dit eigendom.");
+                    return;
+                }
+                if (currentPlayer->Balance < housePrice) {
+                    ui->statusLabel->setText("Niet genoeg geld om een huis te kopen.");
+                    return;
+                }
+
+                tile->huizencount++;
+                currentPlayer->aantalHuizen++;
+                currentPlayer->trekGeldAf(housePrice);
+                ui->BalanceLabel->setText(QString::number(currentPlayer->Balance));
+                ui->statusLabel->setText(QString("Huis gekocht op %1.").arg(tile->name));
+
+                sellHouseButton->setEnabled(true);
+
+                // Update label text
+                QString updatedInfo = QString(
+                                          "Hypotheek: €%1\n"
+                                          "Prijs per huis: €%2\n"
+                                          "Huur:\n"
+                                          " - Onbebouwd: €%3\n"
+                                          " - 1 huis: €%4\n"
+                                          " - 2 huizen: €%5\n"
+                                          " - 3 huizen: €%6\n"
+                                          " - 4 huizen: €%7\n"
+                                          " - Hotel: €%8\n"
+                                          "Gehypothekeerd: %9\n"
+                                          "Aantal huizen: %10")
+                                          .arg(tile->hypo)
+                                          .arg(tile->prijsPerHuis)
+                                          .arg(tile->r1)
+                                          .arg(tile->r2)
+                                          .arg(tile->r3)
+                                          .arg(tile->r4)
+                                          .arg(tile->r5)
+                                          .arg(tile->r6)
+                                          .arg(tile->gehypotykeert ? "Ja" : "Nee")
+                                          .arg(tile->huizencount);
+
+                label->setText(updatedInfo);
+                updateTileHouses(tile->index);
+            });
+
+            connect(sellHouseButton, &QPushButton::clicked, [=]() {
+                if (tile->huizencount <= 0) {
+                    ui->statusLabel->setText("Geen huizen om te verkopen op dit eigendom.");
+                    return;
+                }
+
+
+                int refund = tile->prijsPerHuis / 2;
+                tile->huizencount--;
+                currentPlayer->aantalHuizen --;
+                currentPlayer->voegGeldToe(refund);
+                ui->BalanceLabel->setText(QString::number(currentPlayer->Balance));
+                ui->statusLabel->setText(QString("Huis verkocht op %1.").arg(tile->name));
+
+                if (tile->huizencount == 0) {
+                    sellHouseButton->setEnabled(false);
+                }
+
+                // Update label text
+                QString updatedInfo = QString(
+                                          "Hypotheek: €%1\n"
+                                          "Prijs per huis: €%2\n"
+                                          "Huur:\n"
+                                          " - Onbebouwd: €%3\n"
+                                          " - 1 huis: €%4\n"
+                                          " - 2 huizen: €%5\n"
+                                          " - 3 huizen: €%6\n"
+                                          " - 4 huizen: €%7\n"
+                                          " - Hotel: €%8\n"
+                                          "Gehypothekeerd: %9\n"
+                                          "Aantal huizen: %10")
+                                          .arg(tile->hypo)
+                                          .arg(tile->prijsPerHuis)
+                                          .arg(tile->r1)
+                                          .arg(tile->r2)
+                                          .arg(tile->r3)
+                                          .arg(tile->r4)
+                                          .arg(tile->r5)
+                                          .arg(tile->r6)
+                                          .arg(tile->gehypotykeert ? "Ja" : "Nee")
+                                          .arg(tile->huizencount);
+
+                label->setText(updatedInfo);
+                updateTileHouses(tile->index);
+            });
+        }
+
+
+        QPushButton* actionButton = new QPushButton(tile->gehypotykeert ? "Koop terug" : "Hypotheek/Sell");
+        groupLayout->addWidget(actionButton);
+
+        if (tile->huizencount > 0) {
+            actionButton->setEnabled(false);
+        }
+
+        connect(actionButton, &QPushButton::clicked, [=]() {
+            if (!tile->gehypotykeert) {
+                tile->gehypotykeert = true;
+                currentPlayer->voegGeldToe(tile->hypo);
+                ui->BalanceLabel->setText(QString::number(currentPlayer->Balance));
+                ui->statusLabel->setText(QString("%1 is gehypothekeerd voor €%2.")
+                                             .arg(tile->name)
+                                             .arg(tile->hypo));
+            } else {
+                int terugKoopPrijs = tile->hypo * 1.1;
+                if (currentPlayer->Balance < terugKoopPrijs) {
+                    ui->statusLabel->setText("Niet genoeg geld om terug te kopen!");
+                    return;
+                }
+
+                tile->gehypotykeert = false;
+                currentPlayer->trekGeldAf(terugKoopPrijs);
+                ui->BalanceLabel->setText(QString::number(currentPlayer->Balance));
+                ui->statusLabel->setText(QString("%1 is teruggekocht voor €%2.")
+                                             .arg(tile->name)
+                                             .arg(terugKoopPrijs));
+            }
+
+            // Update label
+            QString updatedInfo;
+            if (isStation) {
+                updatedInfo = QString(
+                                  "Hypotheek: €%1\n"
+                                  "Huur:\n"
+                                  " - 1 station: €25\n"
+                                  " - 2 stations: €50\n"
+                                  " - 3 stations: €100\n"
+                                  " - 4 stations: €200\n"
+                                  "Gehypothekeerd: %2")
+                                  .arg(tile->hypo)
+                                  .arg(tile->gehypotykeert ? "Ja" : "Nee");
+            } else if (isUtility) {
+                updatedInfo = QString(
+                                  "Hypotheek: €%1\n"
+                                  "Huur:\n"
+                                  " - 1 nutsbedrijf: 4× dobbelstenen\n"
+                                  " - 2 nutsbedrijven: 10× dobbelstenen\n"
+                                  "Gehypothekeerd: %2")
+                                  .arg(tile->hypo)
+                                  .arg(tile->gehypotykeert ? "Ja" : "Nee");
+            } else {
+                updatedInfo = QString(
+                                  "Hypotheek: €%1\n"
+                                  "Prijs per huis: €%2\n"
+                                  "Huur:\n"
+                                  " - Onbebouwd: €%3\n"
+                                  " - 1 huis: €%4\n"
+                                  " - 2 huizen: €%5\n"
+                                  " - 3 huizen: €%6\n"
+                                  " - 4 huizen: €%7\n"
+                                  " - Hotel: €%8\n"
+                                  "Gehypothekeerd: %9")
+                                  .arg(tile->hypo)
+                                  .arg(tile->prijsPerHuis)
+                                  .arg(tile->r1)
+                                  .arg(tile->r2)
+                                  .arg(tile->r3)
+                                  .arg(tile->r4)
+                                  .arg(tile->r5)
+                                  .arg(tile->r6)
+                                  .arg(tile->gehypotykeert ? "Ja" : "Nee");
+            }
+
+            label->setText(updatedInfo);
+            actionButton->setEnabled(false); // Disable after use
+        });
+
+        scrollLayout->addWidget(group);
+    }
+
+    scrollWidget->setLayout(scrollLayout);
+    scrollArea->setWidget(scrollWidget);
+    mainLayout->addWidget(scrollArea);
+
+    QPushButton* closeButton = new QPushButton("Sluiten");
+    mainLayout->addWidget(closeButton);
+    connect(closeButton, &QPushButton::clicked, propDialog, &QDialog::accept);
+
+    propDialog->setLayout(mainLayout);
+    propDialog->exec();
+}
+
+void MainWindow::on_tradeButton_released() {
+    Player* currentPlayer = players[currentPlayerIndex];
+
+    // Trade Dialog
+    QDialog dialog(this);
+    dialog.setWindowTitle("Trade");
+
+    QVBoxLayout* layout = new QVBoxLayout(&dialog);
+
+    // Player Selection
+    QLabel* playerLabel = new QLabel("Select a player to trade with:");
+    QComboBox* playerCombo = new QComboBox();
+    QVector<Player*> tradeablePlayers;
+
+    for (int i = 0; i < players.size(); ++i) {
+        if (i != currentPlayerIndex) {
+            playerCombo->addItem(players[i]->name);
+            tradeablePlayers.append(players[i]);
+        }
+    }
+
+    // Money Offer Inputs
+    QSpinBox* offerMoneySpin = new QSpinBox();
+    offerMoneySpin->setMaximum(currentPlayer->Balance);
+    offerMoneySpin->setPrefix("You give: $");
+
+    QSpinBox* requestMoneySpin = new QSpinBox();
+    requestMoneySpin->setMaximum(10000); // placeholder
+    requestMoneySpin->setPrefix("You get: $");
+
+    // Property Selection
+    QLabel* yourPropsLabel = new QLabel("Your properties:");
+    QListWidget* yourPropsList = new QListWidget();
+    for (Tile* tile : currentPlayer->ownedProperties) {
+        yourPropsList->addItem(tile->name);
+    }
+    yourPropsList->setSelectionMode(QAbstractItemView::MultiSelection);
+
+    QLabel* theirPropsLabel = new QLabel("Their properties:");
+    QListWidget* theirPropsList = new QListWidget();
+    theirPropsList->setSelectionMode(QAbstractItemView::MultiSelection);
+
+    // When other player is selected, populate their properties
+    QObject::connect(playerCombo, &QComboBox::currentTextChanged, [&]() {
+        theirPropsList->clear();
+        Player* selectedPlayer = tradeablePlayers[playerCombo->currentIndex()];
+        requestMoneySpin->setMaximum(selectedPlayer->Balance);
+        for (Tile* t : selectedPlayer->ownedProperties) {
+            theirPropsList->addItem(t->name);
+        }
+    });
+
+    // Confirm Button
+    QPushButton* confirmButton = new QPushButton("Confirm Trade");
+    QObject::connect(confirmButton, &QPushButton::clicked, [&]() {
+        Player* otherPlayer = tradeablePlayers[playerCombo->currentIndex()];
+        int offerMoney = offerMoneySpin->value();
+        int requestMoney = requestMoneySpin->value();
+
+        // Validate
+        if (currentPlayer->Balance < offerMoney || otherPlayer->Balance < requestMoney) {
+            QMessageBox::warning(&dialog, "Invalid Trade", "One of the players doesn't have enough money.");
+            return;
+        }
+
+        // Perform trade
+        currentPlayer->Balance -= offerMoney;
+        currentPlayer->Balance += requestMoney;
+        otherPlayer->Balance -= requestMoney;
+        otherPlayer->Balance += offerMoney;
+
+        // Property transfers
+        for (QListWidgetItem* item : yourPropsList->selectedItems()) {
+            QString propName = item->text();
+            for (Tile* tile : currentPlayer->ownedProperties) {
+                if (tile->name == propName) {
+                    tile->Owner = otherPlayer;
+                    updateTileOwnerLabel(tile);
+                    currentPlayer->ownedProperties.removeOne(tile);
+                    otherPlayer->ownedProperties.append(tile);
+                    break;
+                }
+            }
+        }
+
+        for (QListWidgetItem* item : theirPropsList->selectedItems()) {
+            QString propName = item->text();
+            for (Tile* tile : otherPlayer->ownedProperties) {
+                if (tile->name == propName) {
+                    tile->Owner = currentPlayer;
+                    updateTileOwnerLabel(tile);
+                    otherPlayer->ownedProperties.removeOne(tile);
+                    currentPlayer->ownedProperties.append(tile);
+                    break;
+                }
+            }
+        }
+        ui->BalanceLabel->setText(QString::number(currentPlayer->Balance));
+        dialog.accept();
+    });
+
+    // Add widgets to layout
+    layout->addWidget(playerLabel);
+    layout->addWidget(playerCombo);
+    layout->addWidget(offerMoneySpin);
+    layout->addWidget(requestMoneySpin);
+    layout->addWidget(yourPropsLabel);
+    layout->addWidget(yourPropsList);
+    layout->addWidget(theirPropsLabel);
+    layout->addWidget(theirPropsList);
+    layout->addWidget(confirmButton);
+
+    // Initialize first selection
+    if (playerCombo->count() > 0) {
+        emit playerCombo->currentTextChanged(playerCombo->currentText());
+        dialog.exec();
+    } else {
+        QMessageBox::information(this, "No Trade", "No available players to trade with.");
+    }
+}
+bool MainWindow::checkMonopoly(const QString colorGroup) {
+    for (Tile* tile : board->tiles) {
+        if (tile->colorgroup == colorGroup) {
+            if (tile->Owner != currentPlayer) {
+                return false;
+            }
+            if (tile->gehypotykeert == true){
+                return false;
+            }
+
+        }
+    }
+    return true;
+}
+void MainWindow::updateTileHouses(int position) {
+    Tile* tile = board->tiles[position];
+    if (!tile || (tile->huizencount < 0) || (tile->huizencount) > 5) return;
+
+    // Remove previous graphics
+    for (QGraphicsItem* item : tile->houseGraphics) {
+        scene->removeItem(item);
+        delete item;
+    }
+    tile->houseGraphics.clear();
+
+    // Base tile position
+    QPointF basePos = board->calculateTilePosition(position);
+
+    const int houseWidth = 10;
+    const int houseHeight = 10;
+
+    if (tile->huizencount == 5) {
+        // Draw 1 red hotel
+        QGraphicsRectItem* hotel = new QGraphicsRectItem(0, 0, houseWidth * 2, houseHeight);
+        hotel->setBrush(Qt::red);
+        hotel->setPen(QPen(Qt::black));
+        hotel->setZValue(3);
+        hotel->setPos(basePos.x() + 15, basePos.y() + 2); // Centered
+        tile->houseGraphics.append(hotel);
+        scene->addItem(hotel);
+    } else {
+        // Draw 1–4 green houses
+        for (int i = 0; i < tile->huizencount; ++i) {
+            QGraphicsRectItem* house = new QGraphicsRectItem(0, 0, houseWidth, houseHeight);
+            house->setBrush(Qt::green);
+            house->setPen(QPen(Qt::black));
+            house->setZValue(3);
+            house->setPos(basePos.x() + 5 + (i * (houseWidth + 2)), basePos.y() + 2);
+            tile->houseGraphics.append(house);
+            scene->addItem(house);
+        }
+    }
+}
+
+void MainWindow::updateTileOwnerLabel(Tile* tile) {
+    // Remove old label if it exists
+    if (tile->ownerLabel != nullptr) {
+        scene->removeItem(tile->ownerLabel);
+        delete tile->ownerLabel;
+        tile->ownerLabel = nullptr;
+    }
+
+    // If no owner, don't draw label
+    if (tile->Owner == nullptr) {
+        return;
+    }
+
+    QGraphicsRectItem* tileGraphics = tile->getGraphics();
+    if (!tileGraphics) return;
+
+    QPointF pos = tileGraphics->pos();
+    QRectF rect = tileGraphics->rect();
+
+    qreal labelWidth = 15;
+    qreal labelHeight = 15;
+    QPointF labelPos(
+        pos.x() + 2,
+        pos.y() + rect.height() - labelHeight - 2
+        );
+
+    tile->ownerLabel = new QGraphicsRectItem(0, 0, labelWidth, labelHeight);
+    tile->ownerLabel->setBrush(tile->Owner->playerColor);
+    tile->ownerLabel->setPen(QPen(Qt::black)); // Black border
+    tile->ownerLabel->setPos(labelPos);
+
+    scene->addItem(tile->ownerLabel);
 }
