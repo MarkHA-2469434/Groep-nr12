@@ -11,7 +11,6 @@
 
 #include "Board.h"
 #include "Player.h"
-#include "player_setup.h"
 #include "bot.h"
 #include "Kans_AlgFonds.h"
 
@@ -58,6 +57,9 @@ public:
     void highlightCurrentPlayer();
     void purchaseCurrentProperty();
 
+    void createPlayerInfoWidgets();
+    void updatePlayerInfo();
+
     //jail members
     void handleJailTurn();
     void payJailFine();
@@ -71,6 +73,8 @@ private slots:
 
     void on_OwnerPropsButton_released();
     void on_tradeButton_released();
+
+    void on_FaillietButton_released();
 
 private:
     Ui::MainWindow* ui;
@@ -93,13 +97,22 @@ private:
     static const int TILES_PER_SIDE {11};
     static const int BOARD_SIZE {TILE_SIZE * TILES_PER_SIDE};
 
+    void resetTurnAfterJail();
+    void resetTurnForRollAgain();
+    void handleThreeDoubles();
+    void handleJailRoll(int dice1, int dice2);
+
     void createBoard();
     void createProperty(int index, const QString& name, QColor color);
-    void animatePlayerMovement(int steps);
+    void animatePlayerMovement(int steps, bool wasDoubles);
+
+    bool checkHouseBuy(Tile* tile);
+    bool checkHouseSell(Tile* tile);
 
     QGraphicsEllipseItem* playerToken = nullptr;
 
     QVector<Player*> players;
 
+    int consecutiveDoubles = 0;
 };
 #endif

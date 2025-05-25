@@ -22,5 +22,4 @@ private:
     QGraphicsScene* scene;
 };
 
-
 #endif

@@ -7,6 +7,14 @@
 class Tile;
 class Player{
 public:
+    Player(QGraphicsScene* scene, QColor color);
+    virtual ~Player() = default;
+
+    int getPosition() const { return position; }
+    int getPrevPosition()const{return prevPosition;}
+    void setPosition(int pos) {position = pos;};
+
+
     int Balance = 1500;
 
     bool inJail = false;
@@ -24,24 +32,17 @@ public:
 
     QString name;
 
-    Player(QGraphicsScene* scene, QColor color);
 
-    virtual ~Player() = default;
     QColor getPlayerColor() const { return playerColor; }
 
     void moveTo(int index, const QPointF& pos);
     QGraphicsItem* getToken() const{return token;}
 
-    int getPosition() const { return position; }
-    int getPrevPosition()const{return prevPosition;}
-    void setPosition(int pos) {prevPosition = position; position = pos;};
 
     void sendToJail(int jailPosition, const QPointF& pos);
     int jailTurns = 0;
 
     QColor playerColor;
-
-    QVector<Tile> OwnedProperties;
 
     void voegGeldToe(int bedrag) {Balance += bedrag;}
     void trekGeldAf(int bedrag) {Balance -= bedrag;}
