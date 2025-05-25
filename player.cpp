@@ -18,3 +18,4 @@ void Player::sendToJail(int jailPosition, const QPointF& pos) {
     setPosition(jailPosition);
     moveTo(jailPosition, pos);
 }
+

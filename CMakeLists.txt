@@ -37,6 +37,9 @@ if(${QT_VERSION_MAJOR} GREATER_EQUAL 6)
         player_setup.h player_setup.cpp player_setup.ui
         bot.h bot.cpp
         Kans_AlgFonds.h
+        resources.qrc
+        playerinfobox.h playerinfobox.cpp
+
 
 
 
